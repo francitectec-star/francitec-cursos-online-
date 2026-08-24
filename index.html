@@ -209,14 +209,110 @@ footer{background:#061826;color:rgba(255,255,255,.75);padding:38px 0 24px}
   .hero h1 span{display:inline}
 }
 @media(max-width:640px){
-  section{padding:60px 0}
-  .hero-facts{gap:22px}
-  .fact b{font-size:1.3rem}
-  .form-box{padding:26px 20px}
-  .promo-card{padding:30px 24px}
-  .promo-card .price-big{font-size:2.7rem}
-  .social{right:14px;bottom:20px}
-  .social a{width:44px;height:44px;font-size:1.05rem}
+  section{padding:48px 0}
+
+  .container{
+    width:100%;
+    padding:0 16px
+  }
+
+  .hero{
+    min-height:88vh;
+    padding:30px 0
+  }
+
+  .hero-content{
+    padding-top:70px;
+    padding-bottom:40px
+  }
+
+  .hero h1{
+    font-size:2.15rem;
+    line-height:1.08;
+    letter-spacing:-1px
+  }
+
+  .hero p{
+    font-size:.95rem;
+    line-height:1.6
+  }
+
+  .hero-cta{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px
+  }
+
+  .hero-cta .btn{
+    width:100%;
+    text-align:center
+  }
+
+  .hero-facts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:36px
+  }
+
+  .fact{
+    text-align:center
+  }
+
+  .fact b{
+    font-size:1.25rem
+  }
+
+  .fact span{
+    font-size:.78rem
+  }
+
+  .form-box{
+    padding:24px 18px
+  }
+
+  .field input,
+  .field select,
+  .field textarea{
+    width:100%;
+    font-size:16px
+  }
+
+  .promo-card{
+    padding:28px 20px
+  }
+
+  .promo-card .price-big{
+    font-size:2.4rem
+  }
+
+  .social{
+    right:12px;
+    bottom:16px
+  }
+
+  .social a{
+    width:46px;
+    height:46px;
+    font-size:1rem
+  }
+
+  .gallery-grid{
+    grid-template-columns:1fr
+  }
+
+  .equipa-grid,
+  .dif-grid{
+    grid-template-columns:1fr
+  }
+
+  .sched-table{
+    overflow-x:auto
+  }
+
+  .footer{
+    text-align:center
+  }
 }
 </style>
 </head>
