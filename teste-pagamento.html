@@ -44,17 +44,22 @@ async function testarPagamento() {
       }
     );
 
-    const dados = await resposta.json();
+    const texto = await resposta.text();
+
+try {
+    const dados = JSON.parse(texto);
 
     resultado.innerHTML =
-      "<strong>Resposta da API:</strong><br>" +
-      JSON.stringify(dados);
+        "<strong>Resposta da API:</strong><br><pre>" +
+        JSON.stringify(dados, null, 2) +
+        "</pre>";
 
-  } catch (erro) {
+} catch (e) {
 
     resultado.innerHTML =
-      "Erro ao conectar com a API: " + erro;
-
+        "<strong>A API respondeu, mas não enviou JSON:</strong><br><pre>" +
+        texto +
+        "</pre>";
   }
 }
 </script>
