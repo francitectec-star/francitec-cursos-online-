@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Pagamento - Francitec</title>
+</head>
+
+<body style="font-family: Arial; text-align: center; padding: 40px;">
+
+  <h1>Francitec</h1>
+
+  <h2>Teste de Pagamento</h2>
+
+  <p>Esta página está ligada à API de pagamentos.</p>
+
+  <button onclick="testarPagamento()"
+    style="padding: 15px 25px; font-size: 18px;">
+    TESTAR PAGAMENTO
+  </button>
+
+  <p id="resultado" style="margin-top: 30px;"></p>
+
+<script>
+async function testarPagamento() {
+
+  const resultado = document.getElementById("resultado");
+
+  resultado.innerHTML = "A testar...";
+
+  try {
+
+    const resposta = await fetch(
+      "https://francitec-payments-api.onrender.com/test-payment",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          amount: 100,
+          student: "Aluno de teste"
+        })
+      }
+    );
+
+    const dados = await resposta.json();
+
+    resultado.innerHTML =
+      "<strong>Resposta da API:</strong><br>" +
+      JSON.stringify(dados);
+
+  } catch (erro) {
+
+    resultado.innerHTML =
+      "Erro ao conectar com a API: " + erro;
+
+  }
+}
+</script>
+
+</body>
+</html>
