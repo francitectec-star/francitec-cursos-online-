@@ -1,377 +1,3567 @@
-from pathlib import Path
-import re
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Francitec — Centro de Formação Profissional | Maputo, Moçambique</title>
+<meta name="generator" content="Francitec site - HTML puro">
+<meta name="description" content="Francitec — Centro de Formação Profissional em Maputo. Cursos técnicos e administrativos, de segunda a sexta e aos sábados.">
 
-path = Path("/mnt/data/index.html")
-html = path.read_text(encoding="utf-8")
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-# 1) Replace Saturday course pricing/details in the course cards.
-html = html.replace(
-    '<div class="card"><div class="emoji">⚙️</div><h3>Máquinas e Comandos Elétricos</h3><p>Painéis, comandos e dimensionamento de sistemas elétricos.</p><div class="meta"><span class="pill gold">3 meses</span><span class="pill orange">Sábados</span></div><div class="price"><b>1.500</b><small>taxa única</small></div><a href="#contacto" class="btn btn-orange">Pré-inscrição</a></div>',
-    '<div class="card"><div class="emoji">⚙️</div><h3>Máquinas e Comandos Elétricos</h3><p>Painéis, comandos e dimensionamento de sistemas elétricos.</p><div class="meta"><span class="pill gold">3 meses</span><span class="pill orange">Sábados</span></div><div class="price"><b>1.500</b><small>taxa promocional</small></div><a href="#contacto" class="btn btn-orange">Pré-inscrição</a></div>'
-)
-html = html.replace(
-    '<div class="card"><div class="emoji">☀️</div><h3>Sistema Fotovoltaico</h3><p>Instalação, configuração e dimensionamento de sistemas solares.</p><div class="meta"><span class="pill gold">Sábados</span></div><div class="price"><b>1.500</b><small>taxa única</small></div><a href="#contacto" class="btn btn-orange">Pré-inscrição</a></div>',
-    '<div class="card"><div class="emoji">☀️</div><h3>Sistema Fotovoltaico</h3><p>Instalação, configuração e dimensionamento de sistemas solares.</p><div class="meta"><span class="pill gold">3 meses</span><span class="pill orange">Sábados</span></div><div class="price"><b>2.670</b><small>MT/mês</small></div><a href="#contacto" class="btn btn-primary">Pré-inscrição</a></div>'
-)
+<style>
+:root{
+  --navy:#0a2540;
+  --navy2:#11365c;
+  --gold:#f5b800;
+  --gold2:#ffd84a;
+  --orange:#ff7a1a;
+  --bg:#f5f8fc;
+  --text:#1d2733;
+  --muted:#5b6b7b;
+  --white:#fff;
+  --radius:18px;
+  --shadow:0 14px 38px rgba(10,37,64,.12)
+}
 
-# 2) Make the promotion wording explicitly exclude PV.
-html = html.replace(
-    '<div class="promo-tag">⭐ Sábados: taxa única 1.500 MT</div>',
-    '<div class="promo-tag">⭐ Sábados: 1 curso 1.500 MT · 2 cursos 2.500 MT</div>'
-)
-html = html.replace(
-    '<div class="promo-card"><h3>Taxa única para os cursos de sábado</h3><div class="price-big">1.500 <small>MT</small></div><p>Faça a sua formação aos sábados com uma taxa única de 1.500 MT.</p><p style="margin-top:7px"><strong>2 cursos: 2.500 MT</strong></p><div class="note">🎯 Reserve o seu sábado para se formar.</div></div>',
-    '<div class="promo-card"><h3>Promoção dos cursos aos sábados</h3><div class="price-big">1.500 <small>MT</small></div><p>1 curso aos sábados por uma taxa promocional de 1.500 MT.</p><p style="margin-top:7px"><strong>2 cursos: 2.500 MT</strong></p><div class="note">⚠️ O Sistema Fotovoltaico não faz parte desta promoção. Aos sábados: 2.670 MT/mês.</div></div>'
-)
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box
+}
 
-# 3) Replace schedule with 5 turns including 15:00–17:00, no invented 18:00 turn.
-old_sched = re.search(r'<div class="schedule-card"><h3>Horários disponíveis aos sábados</h3>.*?</div>\s*</div>', html, re.S)
-new_sched = '''<div class="schedule-card"><h3>Horários disponíveis aos sábados</h3><div class="sched-table">
-<div class="sched-row"><b>07:00 — 09:00</b><span class="turma">1.ª Turma</span></div>
-<div class="sched-row"><b>09:00 — 11:00</b><span class="turma">2.ª Turma</span></div>
-<div class="sched-row"><b>11:00 — 13:00</b><span class="turma">3.ª Turma</span></div>
-<div class="sched-row"><b>13:00 — 15:00</b><span class="turma">4.ª Turma</span></div>
-<div class="sched-row"><b>15:00 — 17:00</b><span class="turma">5.ª Turma</span></div>
-</div><p style="font-size:.78rem;color:var(--muted);margin-top:12px">O turno será escolhido no formulário de pré-inscrição.</p></div>'''
-if old_sched:
-    html = html[:old_sched.start()] + new_sched + html[old_sched.end():]
+html{
+  scroll-behavior:smooth
+}
 
-# 4) Insert payment section before gallery, preserving the previous M-Pesa + TED-link method.
-payment = r'''
-<section class="pagamento" id="pagamento">
+body{
+  font-family:Poppins,Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.6
+}
+
+a{
+  text-decoration:none;
+  color:inherit
+}
+
+img{
+  max-width:100%;
+  display:block
+}
+
+.container{
+  max-width:1180px;
+  margin:auto;
+  padding:0 24px
+}
+
+section{
+  padding:75px 0
+}
+
+h2{
+  font-size:clamp(1.8rem,3.6vw,2.5rem);
+  font-weight:800;
+  color:var(--navy);
+  line-height:1.2
+}
+
+.dot{
+  color:var(--gold)
+}
+
+.lead{
+  color:var(--muted);
+  margin-top:12px
+}
+
+.tag{
+  display:inline-block;
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--navy);
+  background:rgba(245,184,0,.18);
+  padding:7px 15px;
+  border-radius:999px;
+  margin-bottom:13px
+}
+
+
+/* =========================
+   NAV
+========================= */
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  background:rgba(10,37,64,.96);
+  backdrop-filter:blur(10px);
+  color:#fff
+}
+
+.nav-inner{
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:1.18rem;
+  letter-spacing:.5px
+}
+
+.logo-img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:8px;
+  background:#fff;
+  padding:3px
+}
+
+.nav-links{
+  display:flex;
+  gap:24px;
+  align-items:center;
+  font-size:.9rem;
+  font-weight:500
+}
+
+.nav-links a{
+  opacity:.88
+}
+
+.nav-links a:hover{
+  color:var(--gold2);
+  opacity:1
+}
+
+.btn-nav{
+  background:var(--gold)!important;
+  color:var(--navy)!important;
+  padding:10px 19px;
+  border-radius:999px;
+  font-weight:800;
+  opacity:1!important
+}
+
+.burger{
+  display:none;
+  background:none;
+  border:0;
+  color:#fff;
+  font-size:1.7rem;
+  cursor:pointer
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  min-height:94vh;
+  padding-top:72px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  background:
+  linear-gradient(
+    100deg,
+    rgba(8,25,44,.96),
+    rgba(10,37,64,.82),
+    rgba(10,37,64,.45)
+  ),
+  url('https://raw.githubusercontent.com/francitec-star/francitec-cursos-online/main/87848c36-441a-4c52-9557-e350123d1931.jpg')
+  center/cover no-repeat
+}
+
+.hero-content{
+  max-width:720px;
+  padding:75px 0 55px
+}
+
+.hero-badge{
+  display:inline-block;
+  background:rgba(245,184,0,.18);
+  border:1px solid rgba(245,184,0,.5);
+  color:var(--gold2);
+  padding:8px 17px;
+  border-radius:999px;
+  font-size:.82rem;
+  font-weight:700;
+  margin-bottom:22px
+}
+
+.hero h1{
+  font-size:clamp(2.2rem,5.2vw,3.7rem);
+  line-height:1.08;
+  font-weight:800;
+  margin-bottom:20px
+}
+
+.hero h1 span{
+  color:var(--gold);
+  display:block
+}
+
+.hero p{
+  font-size:1.03rem;
+  opacity:.94;
+  max-width:620px;
+  margin-bottom:30px
+}
+
+.hero-cta{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap
+}
+
+.btn{
+  display:inline-block;
+  padding:13px 27px;
+  border-radius:999px;
+  border:0;
+  font-family:inherit;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s
+}
+
+.btn-primary{
+  background:var(--gold);
+  color:var(--navy)
+}
+
+.btn-orange{
+  background:var(--orange);
+  color:#fff
+}
+
+.btn-ghost{
+  border:1px solid rgba(255,255,255,.5);
+  color:#fff;
+  background:rgba(255,255,255,.08)
+}
+
+.btn:hover{
+  transform:translateY(-2px)
+}
+
+.hero-facts{
+  display:flex;
+  gap:35px;
+  flex-wrap:wrap;
+  margin-top:48px
+}
+
+.fact b{
+  display:block;
+  color:var(--gold);
+  font-size:1.45rem
+}
+
+.fact span{
+  font-size:.82rem;
+  opacity:.85
+}
+
+
+/* =========================
+   SOBRE
+========================= */
+
+.sobre-grid{
+  display:grid;
+  grid-template-columns:1fr 1.05fr;
+  gap:50px;
+  align-items:center;
+  margin-top:38px
+}
+
+.sobre-img{
+  aspect-ratio:4/3;
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  position:relative
+}
+
+.sobre-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.caption{
+  position:absolute;
+  left:16px;
+  bottom:16px;
+  background:rgba(10,37,64,.86);
+  color:#fff;
+  padding:7px 13px;
+  border-radius:8px;
+  font-size:.8rem
+}
+
+.sobre-list{
+  list-style:none;
+  display:grid;
+  gap:12px;
+  margin-top:22px
+}
+
+.sobre-list li{
+  display:flex;
+  gap:10px;
+  font-size:.92rem
+}
+
+.sobre-list .ico{
+  color:var(--gold);
+  font-weight:900
+}
+
+.slogan{
+  display:inline-block;
+  margin-top:22px;
+  padding:13px 17px;
+  border-left:4px solid var(--gold);
+  background:rgba(245,184,0,.12);
+  border-radius:8px;
+  font-weight:600;
+  color:var(--navy)
+}
+
+
+/* =========================
+   CURSOS
+========================= */
+
+.cursos{
+  background:#fff
+}
+
+.cursos-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:35px
+}
+
+.promo-tag{
+  background:linear-gradient(135deg,var(--orange),var(--gold));
+  color:#fff;
+  font-weight:800;
+  padding:10px 18px;
+  border-radius:12px
+}
+
+.cursos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px
+}
+
+.card{
+  background:#fff;
+  border:1px solid #e6edf5;
+  border-radius:var(--radius);
+  padding:25px 22px;
+  box-shadow:0 4px 14px rgba(10,37,64,.06);
+  display:flex;
+  flex-direction:column;
+  transition:.2s
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow);
+  border-color:var(--gold)
+}
+
+.emoji{
+  width:52px;
+  height:52px;
+  border-radius:13px;
+  background:#eef4fb;
+  display:grid;
+  place-items:center;
+  font-size:1.5rem;
+  margin-bottom:14px
+}
+
+.card h3{
+  color:var(--navy);
+  font-size:1.08rem;
+  margin-bottom:6px
+}
+
+.card p{
+  font-size:.84rem;
+  color:var(--muted);
+  flex:1;
+  margin-bottom:13px
+}
+
+.meta{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:15px
+}
+
+.pill{
+  font-size:.7rem;
+  background:#eef4fb;
+  color:var(--navy);
+  padding:5px 9px;
+  border-radius:999px;
+  font-weight:700
+}
+
+.pill.gold{
+  background:rgba(245,184,0,.18);
+  color:#805900
+}
+
+.pill.orange{
+  background:rgba(255,122,26,.14);
+  color:#b84a00
+}
+
+.price{
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  margin-bottom:13px
+}
+
+.price b{
+  font-size:1.35rem;
+  color:var(--navy)
+}
+
+.price small{
+  color:var(--muted);
+  font-size:.75rem
+}
+
+.card .btn{
+  width:100%;
+  text-align:center;
+  padding:10px
+}
+
+
+/* =========================
+   PROMOÇÕES
+========================= */
+
+#promocoes{
+  background:var(--bg)
+}
+
+.promo-grid{
+  display:grid;
+  grid-template-columns:1.05fr 1fr;
+  gap:35px;
+  margin-top:38px
+}
+
+.promo-card{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;
+  border-radius:var(--radius);
+  padding:34px;
+  box-shadow:var(--shadow)
+}
+
+.promo-card h3{
+  font-size:1.45rem
+}
+
+.price-big{
+  font-size:3rem;
+  color:var(--gold);
+  font-weight:900;
+  margin:13px 0
+}
+
+.price-big small{
+  font-size:1rem
+}
+
+.promo-card p{
+  opacity:.92
+}
+
+.note{
+  display:inline-block;
+  margin-top:17px;
+  padding:9px 12px;
+  border:1px solid var(--orange);
+  border-radius:9px;
+  background:rgba(255,122,26,.15);
+  font-size:.82rem
+}
+
+.schedule-card{
+  background:#fff;
+  border-radius:var(--radius);
+  padding:30px;
+  box-shadow:0 4px 14px rgba(10,37,64,.06)
+}
+
+.schedule-card h3{
+  color:var(--navy);
+  margin-bottom:15px
+}
+
+.sched-table{
+  display:grid;
+  gap:7px
+}
+
+.sched-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#f8fafc;
+  padding:10px 13px;
+  border-radius:9px;
+  font-size:.85rem
+}
+
+.turma{
+  background:var(--navy);
+  color:var(--gold);
+  padding:4px 9px;
+  border-radius:5px;
+  font-size:.7rem;
+  font-weight:800
+}
+
+
+/* =========================
+   PAGAMENTOS
+========================= */
+
+.pagamento{
+  background:#fff
+}
+
+.pagamento-head{
+  text-align:center;
+  margin-bottom:40px
+}
+
+.pagamento-head .lead{
+  max-width:680px;
+  margin:12px auto 0
+}
+
+.pagamento-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px
+}
+
+.pagamento-card{
+  background:#fff;
+  border:1px solid #e5ebf2;
+  border-radius:18px;
+  padding:28px 22px;
+  text-align:center;
+  box-shadow:0 4px 14px rgba(10,37,64,.07);
+  position:relative
+}
+
+.pagamento-card.destaque{
+  border:2px solid var(--gold)
+}
+
+.pagamento-selo{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:var(--orange);
+  color:#fff;
+  font-size:.63rem;
+  font-weight:800;
+  padding:5px 8px;
+  border-radius:6px
+}
+
+.pagamento-icon{
+  width:58px;
+  height:58px;
+  margin:0 auto 15px;
+  border-radius:14px;
+  background:#eef4fb;
+  display:grid;
+  place-items:center;
+  font-size:1.55rem
+}
+
+.pagamento-card h3{
+  color:var(--navy);
+  font-size:1.08rem
+}
+
+.pagamento-preco{
+  font-size:2.1rem;
+  font-weight:900;
+  color:var(--navy);
+  margin:10px 0
+}
+
+.pagamento-preco small{
+  font-size:.85rem;
+  color:var(--muted)
+}
+
+.pagamento-card p{
+  font-size:.82rem;
+  color:var(--muted);
+  min-height:58px;
+  margin-bottom:18px
+}
+
+.pagamento-card .btn{
+  width:100%
+}
+
+.mpesa-info{
+  max-width:900px;
+  margin:30px auto 0;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;
+  border-radius:18px;
+  padding:25px 28px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  box-shadow:var(--shadow)
+}
+
+.mpesa-icon{
+  width:58px;
+  height:58px;
+  flex-shrink:0;
+  border-radius:14px;
+  background:rgba(245,184,0,.18);
+  display:grid;
+  place-items:center;
+  font-size:1.5rem
+}
+
+.mpesa-info h3{
+  color:#fff;
+  margin-bottom:4px
+}
+
+.mpesa-info p{
+  font-size:.84rem;
+  color:rgba(255,255,255,.8)
+}
+
+.mpesa-number{
+  display:block;
+  color:var(--gold);
+  font-size:1.45rem
+}
+
+.mpesa-holder{
+  display:block;
+  font-size:.84rem;
+  font-weight:700
+}
+
+.mpesa-info small{
+  display:block;
+  color:rgba(255,255,255,.65);
+  font-size:.72rem;
+  margin-top:4px
+}
+
+
+/* =========================
+   GALERIA
+========================= */
+
+#galeria{
+  background:#fff
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:17px;
+  margin-top:30px
+}
+
+.gallery-item{
+  aspect-ratio:4/3;
+  border-radius:13px;
+  overflow:hidden;
+  position:relative;
+  background:var(--navy)
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.4s
+}
+
+.gallery-item:hover img{
+  transform:scale(1.06)
+}
+
+.tag-photo{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:rgba(10,37,64,.85);
+  color:var(--gold2);
+  padding:5px 9px;
+  border-radius:6px;
+  font-size:.68rem;
+  font-weight:800
+}
+
+.cap-photo{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:17px 15px 13px;
+  color:#fff;
+  background:linear-gradient(transparent,rgba(8,25,44,.94));
+  font-size:.78rem
+}
+
+.cap-photo b{
+  color:var(--gold);
+  display:block
+}
+
+
+/* =========================
+   EQUIPA / GRADUAÇÕES
+========================= */
+
+.equipa-grid,
+.grad-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:19px;
+  margin-top:30px
+}
+
+.equipa-item,
+.grad-card{
+  aspect-ratio:4/3;
+  border-radius:13px;
+  overflow:hidden;
+  position:relative
+}
+
+.equipa-item img,
+.grad-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.graduacoes{
+  background:#fff
+}
+
+.grad-overlay{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  color:#fff;
+  padding:20px 17px;
+  background:linear-gradient(transparent,rgba(8,25,44,.95))
+}
+
+.grad-overlay h4{
+  color:var(--gold)
+}
+
+
+/* =========================
+   DIFERENCIAIS
+========================= */
+
+.dif-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(245px,1fr));
+  gap:18px;
+  margin-top:35px
+}
+
+.dif{
+  background:#fff;
+  border:1px solid #e6edf5;
+  border-radius:13px;
+  padding:22px;
+  display:flex;
+  gap:13px
+}
+
+.dif .ico{
+  font-size:1.35rem
+}
+
+.dif b{
+  color:var(--navy)
+}
+
+.dif p{
+  font-size:.82rem;
+  color:var(--muted);
+  margin-top:3px
+}
+
+
+/* =========================
+   CONTACTO / PRÉ-INSCRIÇÃO
+========================= */
+
+.contacto{
+  background:linear-gradient(160deg,var(--navy),var(--navy2));
+  color:#fff
+}
+
+.contacto h2{
+  color:#fff
+}
+
+.contacto .lead{
+  color:rgba(255,255,255,.78)
+}
+
+.contacto-grid{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:38px;
+  margin-top:35px
+}
+
+.contacto-items{
+  display:grid;
+  gap:12px
+}
+
+.c-item{
+  display:flex;
+  gap:14px;
+  padding:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:11px
+}
+
+.c-item .ico{
+  width:43px;
+  height:43px;
+  border-radius:10px;
+  background:rgba(245,184,0,.18);
+  display:grid;
+  place-items:center;
+  color:var(--gold);
+  flex-shrink:0
+}
+
+.c-item b{
+  display:block;
+  color:var(--gold);
+  font-size:.75rem;
+  text-transform:uppercase
+}
+
+.c-item span{
+  font-size:.88rem
+}
+
+.req-list{
+  background:rgba(255,122,26,.12);
+  border:1px solid var(--orange);
+  border-radius:11px;
+  padding:15px
+}
+
+.req-list b{
+  color:var(--gold);
+  font-size:.78rem
+}
+
+.req-list ul{
+  margin:7px 0 0 19px;
+  font-size:.83rem
+}
+
+.form-box{
+  background:#fff;
+  color:var(--text);
+  border-radius:var(--radius);
+  padding:30px;
+  box-shadow:0 20px 50px rgba(0,0,0,.22)
+}
+
+.form-box h3{
+  color:var(--navy);
+  font-size:1.3rem
+}
+
+.sub{
+  color:var(--muted);
+  font-size:.83rem;
+  margin:4px 0 20px
+}
+
+.field{
+  margin-bottom:14px
+}
+
+.field label{
+  display:block;
+  color:var(--navy);
+  font-size:.78rem;
+  font-weight:700;
+  margin-bottom:5px
+}
+
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 13px;
+  border:1.5px solid #dfe7f0;
+  border-radius:9px;
+  background:#f8fafc;
+  font-family:inherit;
+  font-size:.9rem
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color:var(--gold);
+  background:#fff
+}
+
+.field textarea{
+  min-height:80px;
+  resize:vertical
+}
+
+.form-box .btn{
+  width:100%;
+  margin-top:3px
+}
+
+.form-note{
+  text-align:center;
+  color:var(--muted);
+  font-size:.72rem;
+  margin-top:11px
+}
+
+
+/* =========================
+   MODALIDADE
+========================= */
+
+.mode-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:18px
+}
+
+.mode-option{
+  position:relative
+}
+
+.mode-option input{
+  position:absolute;
+  opacity:0
+}
+
+.mode-option label{
+  display:block;
+  border:2px solid #dfe7f0;
+  border-radius:11px;
+  padding:13px 10px;
+  text-align:center;
+  font-weight:700;
+  font-size:.82rem;
+  color:var(--navy);
+  cursor:pointer;
+  background:#f8fafc;
+  transition:.2s
+}
+
+.mode-option input:checked+label{
+  border-color:var(--gold);
+  background:rgba(245,184,0,.13);
+  box-shadow:0 0 0 2px rgba(245,184,0,.12)
+}
+
+.help{
+  font-size:.72rem;
+  color:var(--muted);
+  margin:-8px 0 13px
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  background:#061826;
+  color:rgba(255,255,255,.75);
+  padding:35px 0 22px
+}
+
+.foot{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  gap:25px
+}
+
+.foot .logo{
+  color:#fff;
+  margin-bottom:10px
+}
+
+.foot p,
+.foot li{
+  font-size:.8rem
+}
+
+.foot h5{
+  color:var(--gold);
+  text-transform:uppercase;
+  font-size:.75rem;
+  margin-bottom:10px
+}
+
+.foot ul{
+  list-style:none;
+  display:grid;
+  gap:6px
+}
+
+.foot-bottom{
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.1);
+  margin-top:25px;
+  padding-top:17px;
+  font-size:.7rem
+}
+
+
+/* =========================
+   SOCIAL
+========================= */
+
+.social{
+  position:fixed;
+  right:18px;
+  bottom:20px;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  z-index:80
+}
+
+.social a{
+  width:47px;
+  height:47px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:1.1rem;
+  box-shadow:0 8px 18px rgba(0,0,0,.22)
+}
+
+.whatsapp{
+  background:#25d366
+}
+
+.face{
+  background:#1877f2
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:900px){
+
+  .nav-links{
+    position:fixed;
+    top:72px;
+    left:0;
+    right:0;
+    background:var(--navy);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    transform:translateY(-130%);
+    transition:.3s
+  }
+
+  .nav-links.open{
+    transform:translateY(0)
+  }
+
+  .burger{
+    display:block
+  }
+
+  .sobre-grid,
+  .promo-grid,
+  .contacto-grid,
+  .foot{
+    grid-template-columns:1fr
+  }
+
+  .hero{
+    min-height:90vh
+  }
+
+  .pagamento-grid{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:640px){
+
+  section{
+    padding:50px 0
+  }
+
+  .container{
+    padding:0 16px
+  }
+
+  .hero h1{
+    font-size:2.15rem
+  }
+
+  .hero-content{
+    padding-top:60px
+  }
+
+  .hero-cta{
+    flex-direction:column
+  }
+
+  .hero-cta .btn{
+    width:100%;
+    text-align:center
+  }
+
+  .hero-facts{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:17px;
+    margin-top:35px
+  }
+
+  .fact{
+    text-align:center
+  }
+
+  .form-box{
+    padding:23px 17px
+  }
+
+  .mode-box{
+    grid-template-columns:1fr
+  }
+
+  .social{
+    right:11px;
+    bottom:14px
+  }
+
+  .mpesa-info{
+    flex-direction:column;
+    text-align:center;
+    padding:22px 18px
+  }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================
+     NAV
+========================= -->
+
+<nav>
+<div class="container nav-inner">
+
+<a href="#inicio" class="logo">
+<img
+src="images/ea6c6c31-4a01-4f9e-9559-5ffb99e8fa6c.jpg"
+alt="Francitec"
+class="logo-img">
+<span>FRANCITEC</span>
+</a>
+
+<button class="burger" id="burger">☰</button>
+
+<div class="nav-links" id="navLinks">
+<a href="#sobre">Sobre</a>
+<a href="#cursos">Cursos</a>
+<a href="#promocoes">Promoções</a>
+<a href="#pagamento">Pagamentos</a>
+<a href="#galeria">Galeria</a>
+<a href="#contacto">Contacto</a>
+<a href="#contacto" class="btn-nav">Pré-inscrição</a>
+</div>
+
+</div>
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero" id="inicio">
+
 <div class="container">
-<div class="pagamento-head">
-<span class="tag">Pagamento fácil</span>
-<h2>Pague a sua formação por <span class="dot">M-Pesa</span></h2>
-<p class="lead">Escolha o pagamento correspondente à sua inscrição ou à promoção dos cursos aos sábados.</p>
+
+<div class="hero-content">
+
+<div class="hero-badge">
+📢 Inscrições abertas — Turma 2026
 </div>
 
-<div class="pagamento-grid">
+<h1>
+O teu futuro profissional começa
+<span>aqui e agora.</span>
+</h1>
 
-<div class="pagamento-card">
-<div class="pagamento-icon">📝</div>
-<h3>Taxa de inscrição</h3>
-<div class="pagamento-preco">800 <small>MT</small></div>
-<p>Pagamento da taxa de inscrição.</p>
-<a href="https://pay.ted.co.mz/pay/TEDYREZN" class="btn btn-primary" target="_blank" rel="noopener">💳 Pagar inscrição</a>
+<p>
+Centro de Formação Profissional em Maputo, Moçambique.
+Formação prática e teórica para quem quer aprender uma profissão
+e preparar-se para o mercado de trabalho.
+</p>
+
+<div class="hero-cta">
+<a href="#contacto" class="btn btn-primary">
+Fazer pré-inscrição
+</a>
+
+<a href="#cursos" class="btn btn-ghost">
+Ver cursos
+</a>
 </div>
 
-<div class="pagamento-card destaque">
-<span class="pagamento-selo">PROMOÇÃO</span>
-<div class="pagamento-icon">🎓</div>
-<h3>1 curso aos sábados</h3>
-<div class="pagamento-preco">1.500 <small>MT</small></div>
-<p>Taxa promocional para 1 curso aos sábados. Não inclui Sistema Fotovoltaico.</p>
-<a href="https://pay.ted.co.mz/pay/TED6I9WI" class="btn btn-orange" target="_blank" rel="noopener">🎓 Pagar 1 curso</a>
+<div class="hero-facts">
+
+<div class="fact">
+<b>2 opções</b>
+<span>Segunda a sexta ou sábado</span>
 </div>
 
-<div class="pagamento-card destaque">
-<span class="pagamento-selo">PROMOÇÃO</span>
-<div class="pagamento-icon">🎓🎓</div>
-<h3>2 cursos aos sábados</h3>
-<div class="pagamento-preco">2.500 <small>MT</small></div>
-<p>Taxa promocional para 2 cursos aos sábados. Não inclui Sistema Fotovoltaico.</p>
-<a href="https://pay.ted.co.mz/pay/TEDJDXJI" class="btn btn-orange" target="_blank" rel="noopener">🎓🎓 Pagar 2 cursos</a>
+<div class="fact">
+<b>+10</b>
+<span>Cursos disponíveis</span>
+</div>
+
+<div class="fact">
+<b>Prática</b>
+<span>Desde o início</span>
+</div>
+
+<div class="fact">
+<b>Certificado</b>
+<span>No final da formação</span>
 </div>
 
 </div>
 
-<div class="mpesa-info">
-<div class="mpesa-icon">📱</div>
+</div>
+</div>
+</header>
+
+
+<!-- =========================
+     SOBRE
+========================= -->
+
+<section id="sobre">
+
+<div class="container">
+
+<span class="tag">
+Sobre a Francitec
+</span>
+
+<h2>
+Quem é a <span class="dot">Francitec</span>
+</h2>
+
+<div class="sobre-grid">
+
+<div class="sobre-img">
+
+<img
+src="images/b6d7650e-741e-43b1-a013-01d46d80194d.jpg"
+alt="Equipa Francitec">
+
+<div class="caption">
+📸 Equipa Francitec
+</div>
+
+</div>
+
 <div>
-<h3>Pagamento direto por M-Pesa</h3>
-<p><strong>Número M-Pesa:</strong></p>
-<strong class="mpesa-number">841 069 443</strong>
-<span class="mpesa-holder">Titular: Francisco Armando Cossa</span>
-<small>Antes de confirmar, verifique se o nome do beneficiário é Francisco Armando Cossa.</small>
-<a href="tel:*150%23" class="btn btn-primary" style="margin-top:12px">📱 Pagar por M-Pesa</a>
-<a href="#contacto" class="btn btn-orange" style="margin-top:12px">📤 Enviar comprovativo</a>
+
+<p class="lead">
+A Francitec — Centro de Formação Profissional — está sediada
+em Maputo, no Bairro Khongolote, Paragem Canhueiro,
+próximo à Paróquia Santa Maria.
+</p>
+
+<p class="lead">
+Oferecemos formações técnicas e administrativas,
+com componente prática e teórica, para jovens e adultos.
+</p>
+
+<div class="slogan">
+“Formamos hoje, transformamos o amanhã!”
+</div>
+
+<ul class="sobre-list">
+
+<li>
+<span class="ico">✔</span>
+Formação prática e teórica
+</li>
+
+<li>
+<span class="ico">✔</span>
+Instrutores experientes
+</li>
+
+<li>
+<span class="ico">✔</span>
+Certificado no final da formação
+</li>
+
+<li>
+<span class="ico">✔</span>
+Opção de estudar de segunda a sexta ou aos sábados
+</li>
+
+<li>
+<span class="ico">✔</span>
+Pagamento facilitado conforme as condições da formação
+</li>
+
+</ul>
+
 </div>
 </div>
 </div>
 </section>
-'''
-html = html.replace('<section id="galeria">', payment + '\n<section id="galeria">')
 
-# 5) Add payment menu item.
-html = html.replace('<a href="#promocoes">Promoções</a>', '<a href="#promocoes">Promoções</a><a href="#pagamento">Pagamentos</a>')
 
-# 6) Replace the form area with modality-aware form and JS.
-form_start = html.index('<div class="form-box">')
-form_end = html.index('</div>\n</div>\n</div>\n</section>', form_start) + len('</div>')
-new_form = r'''<div class="form-box">
-<h3>Formulário de pré-inscrição</h3>
-<p class="sub">Escolha primeiro a modalidade. O formulário mostrará os cursos correspondentes.</p>
+<!-- =========================
+     CURSOS
+========================= -->
+
+<section class="cursos" id="cursos">
+
+<div class="container">
+
+<div class="cursos-head">
+
+<div>
+
+<span class="tag">
+Oferta formativa
+</span>
+
+<h2>
+Os nossos <span class="dot">cursos</span>
+</h2>
+
+<p class="lead">
+Escolha a formação que combina com os seus objetivos.
+</p>
+
+</div>
+
+<div class="promo-tag">
+⭐ Sábados: 1 curso 1.500 MT · 2 cursos 2.500 MT
+</div>
+
+</div>
+
+
+<div class="cursos-grid">
+
+
+<div class="card">
+
+<div class="emoji">⚡</div>
+
+<h3>
+Eletricidade Instaladora
+</h3>
+
+<p>
+Instalações elétricas residenciais, comerciais e industriais,
+quadros, esquemas e segurança.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+<span class="pill">+ Fotovoltaico</span>
+</div>
+
+<div class="price">
+<b>2.000</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">🏭</div>
+
+<h3>
+Eletricidade Industrial
+</h3>
+
+<p>
+Comandos elétricos, manutenção, automação e partida de motores.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+</div>
+
+<div class="price">
+<b>2.500</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">🔧</div>
+
+<h3>
+Mecânica Auto
+</h3>
+
+<p>
+Diagnóstico, manutenção preventiva e corretiva e prática em veículos.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+</div>
+
+<div class="price">
+<b>3.000</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">⚙️</div>
+
+<h3>
+Máquinas e Comandos Elétricos
+</h3>
+
+<p>
+Painéis, comandos e dimensionamento de sistemas elétricos.
+</p>
+
+<div class="meta">
+<span class="pill gold">3 meses</span>
+<span class="pill orange">Sábados</span>
+</div>
+
+<div class="price">
+<b>1.500</b>
+<small>taxa promocional</small>
+</div>
+
+<a href="#contacto" class="btn btn-orange">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">☀️</div>
+
+<h3>
+Sistema Fotovoltaico
+</h3>
+
+<p>
+Instalação, configuração e dimensionamento de sistemas solares.
+</p>
+
+<div class="meta">
+<span class="pill gold">3 meses</span>
+<span class="pill orange">Sábados</span>
+</div>
+
+<div class="price">
+<b>2.670</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">💻</div>
+
+<h3>
+Informática Básica
+</h3>
+
+<p>
+Computador, internet, Word, Excel e competências digitais essenciais.
+</p>
+
+<div class="meta">
+<span class="pill gold">2 meses</span>
+</div>
+
+<div class="price">
+<b>1.000</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">🖥️</div>
+
+<h3>
+Informática Avançada
+</h3>
+
+<p>
+Conteúdos avançados de informática para desenvolvimento profissional.
+</p>
+
+<div class="meta">
+<span class="pill gold">2 meses</span>
+</div>
+
+<div class="price">
+<b>1.800</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">👶</div>
+
+<h3>
+Educação de Infância
+</h3>
+
+<p>
+Pedagogia, atividades lúdicas, cuidados e preparação para trabalhar com crianças.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+</div>
+
+<div class="price">
+<b>2.000</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">📋</div>
+
+<h3>
+Secretariado Executivo
+</h3>
+
+<p>
+Atendimento, organização, comunicação e técnicas administrativas.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+</div>
+
+<div class="price">
+<b>2.000</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">🇬🇧</div>
+
+<h3>
+Inglês
+</h3>
+
+<p>
+Inglês para comunicação e utilização profissional.
+</p>
+
+<div class="meta">
+<span class="pill gold">6 meses</span>
+</div>
+
+<div class="price">
+<b>600</b>
+<small>MT/mês</small>
+</div>
+
+<a href="#contacto" class="btn btn-primary">
+Pré-inscrição
+</a>
+
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+<!-- =========================
+     PROMOÇÕES
+========================= -->
+
+<section id="promocoes">
+
+<div class="container">
+
+<span class="tag">
+Cursos aos sábados
+</span>
+
+<h2>
+Uma oportunidade para quem
+<span class="dot">trabalha ou estuda</span>
+</h2>
+
+<div class="promo-grid">
+
+
+<div class="promo-card">
+
+<h3>
+Promoção dos cursos aos sábados
+</h3>
+
+<div class="price-big">
+1.500 <small>MT</small>
+</div>
+
+<p>
+1 curso aos sábados por uma taxa promocional de 1.500 MT.
+</p>
+
+<p style="margin-top:7px">
+<strong>
+2 cursos: 2.500 MT
+</strong>
+</p>
+
+<div class="note">
+⚠️ O Sistema Fotovoltaico não faz parte desta promoção.
+Aos sábados: 2.670 MT/mês.
+</div>
+
+</div>
+
+
+<div class="schedule-card">
+
+<h3>
+Horários disponíveis aos sábados
+</h3>
+
+<div class="sched-table">
+
+<div class="sched-row">
+<b>07:00 — 09:00</b>
+<span class="turma">1.ª Turma</span>
+</div>
+
+<div class="sched-row">
+<b>09:00 — 11:00</b>
+<span class="turma">2.ª Turma</span>
+</div>
+
+<div class="sched-row">
+<b>11:00 — 13:00</b>
+<span class="turma">3.ª Turma</span>
+</div>
+
+<div class="sched-row">
+<b>13:00 — 15:00</b>
+<span class="turma">4.ª Turma</span>
+</div>
+
+<div class="sched-row">
+<b>15:00 — 17:00</b>
+<span class="turma">5.ª Turma</span>
+</div>
+
+</div>
+
+<p style="font-size:.78rem;color:var(--muted);margin-top:12px">
+O turno será escolhido no formulário de pré-inscrição.
+</p>
+
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- =========================
+     PAGAMENTOS
+========================= -->
+
+<section class="pagamento" id="pagamento">
+
+<div class="container">
+
+<div class="pagamento-head">
+
+<span class="tag">
+Pagamento fácil
+</span>
+
+<h2>
+Pague a sua formação por
+<span class="dot">M-Pesa</span>
+</h2>
+
+<p class="lead">
+Escolha o pagamento correspondente à sua inscrição
+ou à promoção dos cursos aos sábados.
+</p>
+
+</div>
+
+
+<div class="pagamento-grid">
+
+
+<!-- INSCRIÇÃO -->
+
+<div class="pagamento-card">
+
+<div class="pagamento-icon">
+📝
+</div>
+
+<h3>
+Taxa de inscrição
+</h3>
+
+<div class="pagamento-preco">
+800 <small>MT</small>
+</div>
+
+<p>
+Pagamento da taxa de inscrição.
+</p>
+
+<a
+href="https://pay.ted.co.mz/pay/TEDYREZN"
+class="btn btn-primary"
+target="_blank"
+rel="noopener">
+
+💳 Pagar inscrição
+
+</a>
+
+</div>
+
+
+<!-- 1 CURSO -->
+
+<div class="pagamento-card destaque">
+
+<span class="pagamento-selo">
+PROMOÇÃO
+</span>
+
+<div class="pagamento-icon">
+🎓
+</div>
+
+<h3>
+1 curso aos sábados
+</h3>
+
+<div class="pagamento-preco">
+1.500 <small>MT</small>
+</div>
+
+<p>
+Taxa promocional para 1 curso aos sábados.
+Não inclui Sistema Fotovoltaico.
+</p>
+
+<a
+href="https://pay.ted.co.mz/pay/TED6I9WI"
+class="btn btn-orange"
+target="_blank"
+rel="noopener">
+
+🎓 Pagar 1 curso
+
+</a>
+
+</div>
+
+
+<!-- 2 CURSOS -->
+
+<div class="pagamento-card destaque">
+
+<span class="pagamento-selo">
+PROMOÇÃO
+</span>
+
+<div class="pagamento-icon">
+🎓🎓
+</div>
+
+<h3>
+2 cursos aos sábados
+</h3>
+
+<div class="pagamento-preco">
+2.500 <small>MT</small>
+</div>
+
+<p>
+Taxa promocional para 2 cursos aos sábados.
+Não inclui Sistema Fotovoltaico.
+</p>
+
+<a
+href="https://pay.ted.co.mz/pay/TEDJDXJI"
+class="btn btn-orange"
+target="_blank"
+rel="noopener">
+
+🎓🎓 Pagar 2 cursos
+
+</a>
+
+</div>
+
+
+</div>
+
+
+<!-- M-PESA -->
+
+<div class="mpesa-info">
+
+<div class="mpesa-icon">
+📱
+</div>
+
+<div>
+
+<h3>
+Pagamento direto por M-Pesa
+</h3>
+
+<p>
+<strong>Número M-Pesa:</strong>
+</p>
+
+<strong class="mpesa-number">
+841 069 443
+</strong>
+
+<span class="mpesa-holder">
+Titular: Francisco Armando Cossa
+</span>
+
+<small>
+Antes de confirmar, verifique se o nome do beneficiário é
+Francisco Armando Cossa.
+</small>
+
+<a
+href="tel:*150%23"
+class="btn btn-primary"
+style="margin-top:12px">
+
+📱 Pagar por M-Pesa
+
+</a>
+
+<a
+href="#contacto"
+class="btn btn-orange"
+style="margin-top:12px">
+
+📤 Enviar comprovativo
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     GALERIA
+========================= -->
+
+<section id="galeria">
+
+<div class="container">
+
+<span class="tag">
+Vida na Francitec
+</span>
+
+<h2>
+Aulas práticas e
+<span class="dot">formação</span>
+</h2>
+
+<p class="lead">
+Veja alguns momentos das nossas formações.
+</p>
+
+
+<div class="gallery-grid">
+
+
+<div class="gallery-item">
+
+<img
+src="images/6ece3ebc-4157-456a-ab3a-e15cf0c9263d.jpg"
+alt="Mecânica Auto">
+
+<div class="tag-photo">
+🔧 Mecânica Auto
+</div>
+
+<div class="cap-photo">
+<b>Aula prática</b>
+Prática em oficina.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/8aab920a-8b89-4ce7-90f7-610da4fbb1f9.jpg"
+alt="Mecânica Auto">
+
+<div class="tag-photo">
+🔧 Mecânica Auto
+</div>
+
+<div class="cap-photo">
+<b>Prática</b>
+Diagnóstico e desmontagem.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/d0a6986e-112a-46dd-97c4-6d66625ba507.jpg"
+alt="Mecânica Auto">
+
+<div class="tag-photo">
+🔧 Mecânica Auto
+</div>
+
+<div class="cap-photo">
+<b>Formação prática</b>
+Manutenção automóvel.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/d600f0ef-e94d-4bd3-985c-03a70259a2e8.jpg"
+alt="Mecânica">
+
+<div class="tag-photo">
+🚗 Mecânica
+</div>
+
+<div class="cap-photo">
+<b>Vida na Francitec</b>
+Aprendizagem em equipa.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/16419288-a4cd-4224-98fa-e6274c43ad17.jpg"
+alt="Eletricidade">
+
+<div class="tag-photo">
+⚡ Eletricidade
+</div>
+
+<div class="cap-photo">
+<b>Aula prática</b>
+Montagem de quadro elétrico.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/4705c639-d95b-413e-b00b-f387a0c50aaf.jpg"
+alt="Eletricidade">
+
+<div class="tag-photo">
+⚡ Eletricidade
+</div>
+
+<div class="cap-photo">
+<b>Sala técnica</b>
+Painel de comando.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/7b539427-d43b-4fdb-86c6-46a1c7f15b52.jpg"
+alt="Refrigeração">
+
+<div class="tag-photo">
+❄️ Refrigeração
+</div>
+
+<div class="cap-photo">
+<b>Visita técnica</b>
+Instalação e manutenção.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/b6d171bc-f2a7-486a-9654-f31d89960e48.jpg"
+alt="Instalação">
+
+<div class="tag-photo">
+⚡ Instalação
+</div>
+
+<div class="cap-photo">
+<b>Visita técnica</b>
+Passagem de cabos.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/ea0cd5a3-c868-4c07-8a55-e3df5b7b184d.jpg"
+alt="Industrial">
+
+<div class="tag-photo">
+⚡ Industrial
+</div>
+
+<div class="cap-photo">
+<b>Prática</b>
+Manutenção de motor.
+</div>
+
+</div>
+
+
+<div class="gallery-item">
+
+<img
+src="images/ea38d577-b2bd-46a7-8ea6-3fe54c6c8e07.jpg"
+alt="Educação">
+
+<div class="tag-photo">
+👶 Educação
+</div>
+
+<div class="cap-photo">
+<b>Aula prática</b>
+Atividade pedagógica.
+</div>
+
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+<!-- =========================
+     EQUIPA
+========================= -->
+
+<section id="equipa">
+
+<div class="container">
+
+<span class="tag">
+A nossa família
+</span>
+
+<h2>
+Formandos que constroem o
+<span class="dot">futuro</span>
+</h2>
+
+<div class="equipa-grid">
+
+<div class="equipa-item">
+<img
+src="images/bc2198aa-de13-49b8-93a4-bbfdbd09f727.jpg"
+alt="Formandos Francitec">
+</div>
+
+<div class="equipa-item">
+<img
+src="images/2fb61edb-918c-49cb-b33c-ab1bc69307a5.jpg"
+alt="Formandos Francitec">
+</div>
+
+<div class="equipa-item">
+<img
+src="images/afd18610-3991-4000-aef4-263b4cde978b.jpg"
+alt="Formandos Francitec">
+</div>
+
+</div>
+
+</div>
+</section>
+
+
+<!-- =========================
+     GRADUAÇÕES
+========================= -->
+
+<section class="graduacoes" id="graduacoes">
+
+<div class="container">
+
+<div style="text-align:center">
+
+<span class="tag">
+Cerimónia de graduação
+</span>
+
+<h2>
+Momentos de
+<span class="dot">conquista</span>
+</h2>
+
+<p class="lead">
+Cada formação concluída é uma nova etapa.
+</p>
+
+</div>
+
+
+<div class="grad-grid">
+
+
+<div class="grad-card">
+
+<img
+src="images/9e757c97-1203-4d69-b5ee-152e5f558682.jpg"
+alt="Cerimónia">
+
+<div class="grad-overlay">
+
+<h4>
+Cerimónia de graduação
+</h4>
+
+<p>
+Entrega de certificados.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="grad-card">
+
+<img
+src="images/62fef9a6-397a-4d7e-9e8e-fb493fec852b.jpg"
+alt="Celebração">
+
+<div class="grad-overlay">
+
+<h4>
+Celebração da vitória
+</h4>
+
+<p>
+Formação concluída.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="grad-card">
+
+<img
+src="images/ab93860e-572c-44d8-817b-6a6d2fa5345f.jpg"
+alt="Formandos">
+
+<div class="grad-overlay">
+
+<h4>
+Formandos
+</h4>
+
+<p>
+Equipa completa.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="grad-card">
+
+<img
+src="images/f26ddb12-a22f-4634-afcd-d7a55dfc6061.jpg"
+alt="Cerimónia">
+
+<div class="grad-overlay">
+
+<h4>
+Cerimónia
+</h4>
+
+<p>
+Momento de conquista.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+<!-- =========================
+     DIFERENCIAIS
+========================= -->
+
+<section id="diferenciais">
+
+<div class="container">
+
+<span class="tag">
+Porquê a Francitec?
+</span>
+
+<h2>
+O que nos
+<span class="dot">distingue</span>
+</h2>
+
+
+<div class="dif-grid">
+
+
+<div class="dif">
+
+<span class="ico">
+🛠️
+</span>
+
+<div>
+
+<b>
+Formação prática
+</b>
+
+<p>
+Aprendizagem com prática e teoria.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="dif">
+
+<span class="ico">
+👨‍🏫
+</span>
+
+<div>
+
+<b>
+Instrutores experientes
+</b>
+
+<p>
+Profissionais preparados para ensinar.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="dif">
+
+<span class="ico">
+🏅
+</span>
+
+<div>
+
+<b>
+Certificado
+</b>
+
+<p>
+Certificado no final da formação.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="dif">
+
+<span class="ico">
+📅
+</span>
+
+<div>
+
+<b>
+Flexibilidade
+</b>
+
+<p>
+Segunda a sexta ou aos sábados.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="dif">
+
+<span class="ico">
+💳
+</span>
+
+<div>
+
+<b>
+Pagamento facilitado
+</b>
+
+<p>
+Consulte as condições da sua formação.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="dif">
+
+<span class="ico">
+📍
+</span>
+
+<div>
+
+<b>
+Localização
+</b>
+
+<p>
+Khongolote, Maputo.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+<!-- =========================
+     PRÉ-INSCRIÇÃO
+========================= -->
+
+<section class="contacto" id="contacto">
+
+<div class="container">
+
+<span class="tag" style="color:var(--gold)">
+Pré-inscrição
+</span>
+
+<h2>
+Escolha como quer
+<span class="dot">estudar</span>
+</h2>
+
+<p class="lead">
+Preencha os seus dados. Primeiro escolha entre segunda a sexta
+ou aos sábados; depois selecione o curso.
+</p>
+
+
+<div class="contacto-grid">
+
+
+<div class="contacto-items">
+
+
+<div class="c-item">
+
+<span class="ico">
+📞
+</span>
+
+<div>
+
+<b>
+Telefone / WhatsApp
+</b>
+
+<span>
+84 106 9443 · 85 265 2545
+</span>
+
+</div>
+
+</div>
+
+
+<div class="c-item">
+
+<span class="ico">
+📍
+</span>
+
+<div>
+
+<b>
+Localização
+</b>
+
+<span>
+Bairro Khongolote, Paragem Canhueiro —
+próximo à Paróquia Santa Maria, Maputo
+</span>
+
+</div>
+
+</div>
+
+
+<div class="c-item">
+
+<span class="ico">
+📅
+</span>
+
+<div>
+
+<b>
+Modalidades
+</b>
+
+<span>
+Segunda a sexta ou cursos aos sábados
+</span>
+
+</div>
+
+</div>
+
+
+<div class="req-list">
+
+<b>
+📋 Documentos necessários
+</b>
+
+<ul>
+
+<li>
+Cópia do BI
+</li>
+
+<li>
+2 fotos tipo passe
+</li>
+
+<li>
+Certificado de habilitações
+</li>
+
+<li>
+Taxa de inscrição:
+<strong>800 MT</strong>
+</li>
+
+</ul>
+
+</div>
+
+
+</div>
+
+
+<!-- FORMULÁRIO -->
+
+<div class="form-box">
+
+<h3>
+Formulário de pré-inscrição
+</h3>
+
+<p class="sub">
+Escolha primeiro a modalidade.
+O formulário mostrará os cursos correspondentes.
+</p>
+
 
 <form id="form-inscricao">
 
-<div class="field">
-<label>Nome completo</label>
-<input id="nome" type="text" placeholder="Digite o seu nome completo" required>
-</div>
 
 <div class="field">
-<label>Telefone</label>
-<input id="tel" type="tel" placeholder="84/85..." required>
+
+<label>
+Nome completo
+</label>
+
+<input
+id="nome"
+type="text"
+placeholder="Digite o seu nome completo"
+required>
+
 </div>
 
+
 <div class="field">
-<label>Como pretende estudar?</label>
+
+<label>
+Telefone
+</label>
+
+<input
+id="tel"
+type="tel"
+placeholder="84/85..."
+required>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Como pretende estudar?
+</label>
+
+
 <div class="mode-box">
+
+
 <div class="mode-option">
-<input type="radio" id="semana" name="modalidade" value="Segunda a sexta" required>
-<label for="semana">📚 Segunda a sexta</label>
+
+<input
+type="radio"
+id="semana"
+name="modalidade"
+value="Segunda a sexta"
+required>
+
+<label for="semana">
+📚 Segunda a sexta
+</label>
+
 </div>
+
+
 <div class="mode-option">
-<input type="radio" id="sabado" name="modalidade" value="Aos sábados">
-<label for="sabado">📅 Aos sábados</label>
+
+<input
+type="radio"
+id="sabado"
+name="modalidade"
+value="Aos sábados">
+
+<label for="sabado">
+📅 Aos sábados
+</label>
+
 </div>
+
+
 </div>
 </div>
 
+
 <div class="field">
-<label for="curso">Curso de interesse</label>
+
+<label for="curso">
+Curso de interesse
+</label>
+
 <select id="curso" required>
-<option value="">Escolha primeiro a modalidade</option>
+
+<option value="">
+Escolha primeiro a modalidade
+</option>
+
 </select>
+
 </div>
 
-<p class="help" id="cursoHelp">Escolha uma modalidade para carregar os cursos.</p>
 
-<div class="field" id="turnoBox" style="display:none">
-<label for="turno">Turno preferido aos sábados</label>
+<p class="help" id="cursoHelp">
+Escolha uma modalidade para carregar os cursos.
+</p>
+
+
+<div
+class="field"
+id="turnoBox"
+style="display:none">
+
+<label for="turno">
+Turno preferido aos sábados
+</label>
+
 <select id="turno">
-<option value="">Sem preferência</option>
-<option>07:00 — 09:00</option>
-<option>09:00 — 11:00</option>
-<option>11:00 — 13:00</option>
-<option>13:00 — 15:00</option>
-<option>15:00 — 17:00</option>
+
+<option value="">
+Sem preferência
+</option>
+
+<option>
+07:00 — 09:00
+</option>
+
+<option>
+09:00 — 11:00
+</option>
+
+<option>
+11:00 — 13:00
+</option>
+
+<option>
+13:00 — 15:00
+</option>
+
+<option>
+15:00 — 17:00
+</option>
+
 </select>
+
 </div>
 
-<div class="field" id="segundoCursoBox" style="display:none">
-<label for="segundoCurso">Segundo curso — opcional</label>
+
+<div
+class="field"
+id="segundoCursoBox"
+style="display:none">
+
+<label for="segundoCurso">
+Segundo curso — opcional
+</label>
+
 <select id="segundoCurso">
-<option value="">Não quero segundo curso</option>
+
+<option value="">
+Não quero segundo curso
+</option>
+
 </select>
+
 </div>
 
-<div class="field" id="pvInfo" style="display:none">
-<div class="note" style="margin-top:0">☀️ Sistema Fotovoltaico aos sábados: <strong>2.670 MT/mês</strong>. Este curso não participa da promoção de 1.500/2.500 MT.</div>
+
+<div
+class="field"
+id="pvInfo"
+style="display:none">
+
+<div
+class="note"
+style="margin-top:0">
+
+☀️ Sistema Fotovoltaico aos sábados:
+<strong>2.670 MT/mês</strong>.
+
+Este curso não participa da promoção de
+1.500/2.500 MT.
+
 </div>
+
+</div>
+
 
 <div class="field">
-<label for="msg">Mensagem (opcional)</label>
-<textarea id="msg" placeholder="Escreva uma dúvida ou observação..."></textarea>
+
+<label for="msg">
+Mensagem (opcional)
+</label>
+
+<textarea
+id="msg"
+placeholder="Escreva uma dúvida ou observação...">
+</textarea>
+
 </div>
 
-<button type="submit" class="btn btn-orange">📲 Enviar pré-inscrição via WhatsApp</button>
-<p class="form-note">A pré-inscrição não substitui a confirmação da matrícula.</p>
+
+<button
+type="submit"
+class="btn btn-orange">
+
+📲 Enviar pré-inscrição via WhatsApp
+
+</button>
+
+
+<p class="form-note">
+A pré-inscrição não substitui a confirmação da matrícula.
+</p>
+
 
 </form>
-</div>'''
-html = html[:form_start] + new_form + html[form_end:]
 
-# 7) Replace the script at the end with robust modality/payment logic.
-script_start = html.index('<script>')
-script_end = html.index('</script>', script_start) + len('</script>')
-script = r'''<script>
-const burger=document.getElementById('burger');
-const nav=document.getElementById('navLinks');
+</div>
 
-burger.addEventListener('click',()=>nav.classList.toggle('open'));
-nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+</div>
+</div>
+</section>
 
-const cursosSemana=[
-"Eletricidade Instaladora (+ Sistema Fotovoltaico)",
-"Eletricidade Industrial",
-"Mecânica Auto",
-"Informática Básica",
-"Informática Avançada",
-"Educação de Infância",
-"Secretariado Executivo",
-"Inglês"
-];
 
-const cursosSabado=[
-"Máquinas e Comandos Elétricos",
-"Eletricidade Instaladora",
-"Informática Básica",
-"Sistema Fotovoltaico"
-];
+<!-- =========================
+     FOOTER
+========================= -->
 
-const cursosPromoSabado=[
-"Máquinas e Comandos Elétricos",
-"Eletricidade Instaladora",
-"Informática Básica"
-];
+<footer>
 
-const modalidade=document.querySelectorAll('input[name="modalidade"]');
-const curso=document.getElementById('curso');
-const segundoCurso=document.getElementById('segundoCurso');
-const turnoBox=document.getElementById('turnoBox');
-const segundoCursoBox=document.getElementById('segundoCursoBox');
-const pvInfo=document.getElementById('pvInfo');
-const cursoHelp=document.getElementById('cursoHelp');
+<div class="container">
 
-function preencherSelect(select,lista,primeiraOpcao){
-  select.innerHTML='';
-  const primeira=document.createElement('option');
-  primeira.value='';
-  primeira.textContent=primeiraOpcao;
-  select.appendChild(primeira);
-  lista.forEach(nome=>{
-    const opt=document.createElement('option');
-    opt.value=nome;
-    opt.textContent=nome;
-    select.appendChild(opt);
+<div class="foot">
+
+
+<div>
+
+<div class="logo">
+
+<img
+src="images/ea6c6c31-4a01-4f9e-9559-5ffb99e8fa6c.jpg"
+class="logo-img"
+alt="Francitec">
+
+<span>
+FRANCITEC
+</span>
+
+</div>
+
+<p>
+Centro de Formação Profissional Francitec —
+Formamos hoje, transformamos o amanhã!
+</p>
+
+</div>
+
+
+<div>
+
+<h5>
+Cursos em destaque
+</h5>
+
+<ul>
+
+<li>
+Eletricidade Instaladora
+</li>
+
+<li>
+Eletricidade Industrial
+</li>
+
+<li>
+Mecânica Auto
+</li>
+
+<li>
+Informática
+</li>
+
+<li>
+Educação de Infância
+</li>
+
+</ul>
+
+</div>
+
+
+<div>
+
+<h5>
+Contacto
+</h5>
+
+<ul>
+
+<li>
+84 106 9443
+</li>
+
+<li>
+85 265 2545
+</li>
+
+<li>
+Khongolote — Maputo
+</li>
+
+</ul>
+
+</div>
+
+
+</div>
+
+
+<div class="foot-bottom">
+
+© 2026 Francitec — Centro de Formação Profissional ·
+Maputo, Moçambique · Todos os direitos reservados.
+
+</div>
+
+</div>
+
+</footer>
+
+
+<!-- =========================
+     REDES SOCIAIS
+========================= -->
+
+<div class="social">
+
+<a
+class="whatsapp"
+href="https://wa.me/258841069443"
+target="_blank"
+aria-label="WhatsApp">
+
+💬
+
+</a>
+
+<a
+class="face"
+href="https://web.facebook.com/aas.stc/"
+target="_blank"
+aria-label="Facebook">
+
+f
+
+</a>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+const burger = document.getElementById('burger');
+
+const nav = document.getElementById('navLinks');
+
+
+burger.addEventListener('click', () => {
+
+  nav.classList.toggle('open');
+
+});
+
+
+nav.querySelectorAll('a').forEach(a => {
+
+  a.addEventListener('click', () => {
+
+    nav.classList.remove('open');
+
   });
+
+});
+
+
+/* =========================
+   CURSOS SEGUNDA A SEXTA
+========================= */
+
+const cursosSemana = [
+
+"Eletricidade Instaladora (+ Sistema Fotovoltaico)",
+
+"Eletricidade Industrial",
+
+"Mecânica Auto",
+
+"Informática Básica",
+
+"Informática Avançada",
+
+"Educação de Infância",
+
+"Secretariado Executivo",
+
+"Inglês"
+
+];
+
+
+/* =========================
+   CURSOS AOS SÁBADOS
+========================= */
+
+const cursosSabado = [
+
+"Máquinas e Comandos Elétricos",
+
+"Eletricidade Instaladora",
+
+"Informática Básica",
+
+"Sistema Fotovoltaico"
+
+];
+
+
+/* =========================
+   CURSOS DA PROMOÇÃO
+   SISTEMA FOTOVOLTAICO FICA FORA
+========================= */
+
+const cursosPromoSabado = [
+
+"Máquinas e Comandos Elétricos",
+
+"Eletricidade Instaladora",
+
+"Informática Básica"
+
+];
+
+
+const modalidade =
+document.querySelectorAll(
+'input[name="modalidade"]'
+);
+
+const curso =
+document.getElementById('curso');
+
+const segundoCurso =
+document.getElementById('segundoCurso');
+
+const turnoBox =
+document.getElementById('turnoBox');
+
+const segundoCursoBox =
+document.getElementById('segundoCursoBox');
+
+const pvInfo =
+document.getElementById('pvInfo');
+
+const cursoHelp =
+document.getElementById('cursoHelp');
+
+
+/* =========================
+   PREENCHER SELECT
+========================= */
+
+function preencherSelect(
+select,
+lista,
+primeiraOpcao
+){
+
+  select.innerHTML = '';
+
+  const primeira =
+  document.createElement('option');
+
+  primeira.value = '';
+
+  primeira.textContent =
+  primeiraOpcao;
+
+  select.appendChild(primeira);
+
+
+  lista.forEach(nome => {
+
+    const opt =
+    document.createElement('option');
+
+    opt.value = nome;
+
+    opt.textContent = nome;
+
+    select.appendChild(opt);
+
+  });
+
 }
+
+
+/* =========================
+   CARREGAR CURSOS
+========================= */
 
 function carregarCursos(){
-  const escolha=document.querySelector('input[name="modalidade"]:checked');
 
-  turnoBox.style.display='none';
-  segundoCursoBox.style.display='none';
-  pvInfo.style.display='none';
+  const escolha =
+  document.querySelector(
+    'input[name="modalidade"]:checked'
+  );
+
+
+  turnoBox.style.display = 'none';
+
+  segundoCursoBox.style.display = 'none';
+
+  pvInfo.style.display = 'none';
+
 
   if(!escolha){
-    curso.innerHTML='<option value="">Escolha primeiro a modalidade</option>';
-    segundoCurso.innerHTML='<option value="">Não quero segundo curso</option>';
-    cursoHelp.textContent='Escolha uma modalidade para carregar os cursos.';
+
+    curso.innerHTML =
+    '<option value="">Escolha primeiro a modalidade</option>';
+
+    segundoCurso.innerHTML =
+    '<option value="">Não quero segundo curso</option>';
+
+    cursoHelp.textContent =
+    'Escolha uma modalidade para carregar os cursos.';
+
     return;
+
   }
 
-  if(escolha.value==='Aos sábados'){
-    preencherSelect(curso,cursosSabado,'Selecione um curso aos sábados');
-    preencherSelect(segundoCurso,cursosPromoSabado,'Não quero segundo curso');
-    turnoBox.style.display='block';
-    segundoCursoBox.style.display='block';
-    cursoHelp.textContent='1 curso: 1.500 MT. 2 cursos: 2.500 MT. Sistema Fotovoltaico: 2.670 MT/mês e não participa da promoção.';
-  }else{
-    preencherSelect(curso,cursosSemana,'Selecione um curso de segunda a sexta');
-    segundoCurso.innerHTML='<option value="">Não aplicável</option>';
-    cursoHelp.textContent='Selecione o curso de segunda a sexta e consulte a mensalidade correspondente.';
+
+  /* =========================
+     SÁBADOS
+  ========================= */
+
+  if(escolha.value === 'Aos sábados'){
+
+    preencherSelect(
+      curso,
+      cursosSabado,
+      'Selecione um curso aos sábados'
+    );
+
+
+    preencherSelect(
+      segundoCurso,
+      cursosPromoSabado,
+      'Não quero segundo curso'
+    );
+
+
+    turnoBox.style.display =
+    'block';
+
+
+    segundoCursoBox.style.display =
+    'block';
+
+
+    cursoHelp.textContent =
+    '1 curso: 1.500 MT. 2 cursos: 2.500 MT. Sistema Fotovoltaico: 2.670 MT/mês e não participa da promoção.';
+
   }
+
+  /* =========================
+     SEGUNDA A SEXTA
+  ========================= */
+
+  else{
+
+    preencherSelect(
+      curso,
+      cursosSemana,
+      'Selecione um curso de segunda a sexta'
+    );
+
+
+    segundoCurso.innerHTML =
+    '<option value="">Não aplicável</option>';
+
+
+    cursoHelp.textContent =
+    'Selecione o curso de segunda a sexta e consulte a mensalidade correspondente.';
+
+  }
+
 }
 
-modalidade.forEach(r=>r.addEventListener('change',carregarCursos));
 
-curso.addEventListener('change',()=>{
-  const sabado=document.querySelector('input[name="modalidade"]:checked')?.value==='Aos sábados';
-  const isPV=curso.value==='Sistema Fotovoltaico';
+/* =========================
+   ALTERAÇÃO DA MODALIDADE
+========================= */
 
-  pvInfo.style.display=(sabado && isPV)?'block':'none';
+modalidade.forEach(r => {
+
+  r.addEventListener(
+    'change',
+    carregarCursos
+  );
+
+});
+
+
+/* =========================
+   ALTERAÇÃO DO CURSO
+========================= */
+
+curso.addEventListener(
+'change',
+() => {
+
+  const sabado =
+  document.querySelector(
+    'input[name="modalidade"]:checked'
+  )?.value === 'Aos sábados';
+
+
+  const isPV =
+  curso.value === 'Sistema Fotovoltaico';
+
+
+  pvInfo.style.display =
+  (sabado && isPV)
+  ? 'block'
+  : 'none';
+
 
   if(sabado){
-    segundoCursoBox.style.display=isPV?'none':'block';
+
+    segundoCursoBox.style.display =
+    isPV
+    ? 'none'
+    : 'block';
+
+
     if(isPV){
-      segundoCurso.value='';
+
+      segundoCurso.value = '';
+
     }
-    [...segundoCurso.options].forEach(o=>{
-      o.disabled=(o.value!=='' && o.value===curso.value);
+
+
+    [...segundoCurso.options].forEach(o => {
+
+      o.disabled =
+      (
+        o.value !== '' &&
+        o.value === curso.value
+      );
+
     });
+
   }
+
 });
 
-segundoCurso.addEventListener('change',()=>{
-  [...segundoCurso.options].forEach(o=>{
-    o.disabled=(o.value!=='' && o.value===curso.value);
+
+/* =========================
+   SEGUNDO CURSO
+========================= */
+
+segundoCurso.addEventListener(
+'change',
+() => {
+
+  [...segundoCurso.options].forEach(o => {
+
+    o.disabled =
+    (
+      o.value !== '' &&
+      o.value === curso.value
+    );
+
   });
+
 });
 
-document.getElementById('form-inscricao').addEventListener('submit',function(e){
+
+/* =========================
+   FORMULÁRIO
+========================= */
+
+document
+.getElementById('form-inscricao')
+.addEventListener(
+'submit',
+function(e){
+
   e.preventDefault();
 
-  const nome=document.getElementById('nome').value.trim();
-  const tel=document.getElementById('tel').value.trim();
-  const escolha=document.querySelector('input[name="modalidade"]:checked');
-  const modalidadeValor=escolha?escolha.value:'';
-  const cursoValor=curso.value;
-  const turno=document.getElementById('turno').value;
-  const segundo=segundoCurso.value;
-  const msg=document.getElementById('msg').value.trim();
 
-  let texto='Olá Francitec! 👋\n\n';
-  texto+='*PRÉ-INSCRIÇÃO*\n';
-  texto+='*Nome:* '+nome+'\n';
-  texto+='*Telefone:* '+tel+'\n';
-  texto+='*Modalidade:* '+modalidadeValor+'\n';
-  texto+='*Curso:* '+cursoValor+'\n';
+  const nome =
+  document
+  .getElementById('nome')
+  .value
+  .trim();
 
-  if(modalidadeValor==='Aos sábados'){
-    if(turno) texto+='*Turno:* '+turno+'\n';
 
-    if(cursoValor==='Sistema Fotovoltaico'){
-      texto+='*Valor:* 2.670 MT/mês\n';
-      texto+='*Promoção:* Não aplicável ao Sistema Fotovoltaico\n';
-    }else if(segundo){
-      texto+='*Segundo curso:* '+segundo+'\n';
-      texto+='*Condição:* 2 cursos — 2.500 MT\n';
-    }else{
-      texto+='*Condição:* 1 curso — 1.500 MT\n';
+  const tel =
+  document
+  .getElementById('tel')
+  .value
+  .trim();
+
+
+  const escolha =
+  document.querySelector(
+    'input[name="modalidade"]:checked'
+  );
+
+
+  const modalidadeValor =
+  escolha
+  ? escolha.value
+  : '';
+
+
+  const cursoValor =
+  curso.value;
+
+
+  const turno =
+  document
+  .getElementById('turno')
+  .value;
+
+
+  const segundo =
+  segundoCurso.value;
+
+
+  const msg =
+  document
+  .getElementById('msg')
+  .value
+  .trim();
+
+
+  let texto =
+  'Olá Francitec! 👋\n\n';
+
+
+  texto +=
+  '*PRÉ-INSCRIÇÃO*\n';
+
+
+  texto +=
+  '*Nome:* '
+  + nome
+  + '\n';
+
+
+  texto +=
+  '*Telefone:* '
+  + tel
+  + '\n';
+
+
+  texto +=
+  '*Modalidade:* '
+  + modalidadeValor
+  + '\n';
+
+
+  texto +=
+  '*Curso:* '
+  + cursoValor
+  + '\n';
+
+
+  /* =========================
+     SÁBADOS
+  ========================= */
+
+  if(
+    modalidadeValor === 'Aos sábados'
+  ){
+
+    if(turno){
+
+      texto +=
+      '*Turno:* '
+      + turno
+      + '\n';
+
     }
-  }else{
-    texto+='*Taxa de inscrição:* 800 MT\n';
+
+
+    /* SISTEMA FOTOVOLTAICO */
+
+    if(
+      cursoValor ===
+      'Sistema Fotovoltaico'
+    ){
+
+      texto +=
+      '*Valor:* 2.670 MT/mês\n';
+
+      texto +=
+      '*Promoção:* Não aplicável ao Sistema Fotovoltaico\n';
+
+    }
+
+
+    /* 2 CURSOS */
+
+    else if(segundo){
+
+      texto +=
+      '*Segundo curso:* '
+      + segundo
+      + '\n';
+
+      texto +=
+      '*Condição:* 2 cursos — 2.500 MT\n';
+
+    }
+
+
+    /* 1 CURSO */
+
+    else{
+
+      texto +=
+      '*Condição:* 1 curso — 1.500 MT\n';
+
+    }
+
   }
 
-  if(msg) texto+='\n*Mensagem:* '+msg;
+
+  /* =========================
+     SEGUNDA A SEXTA
+  ========================= */
+
+  else{
+
+    texto +=
+    '*Taxa de inscrição:* 800 MT\n';
+
+  }
+
+
+  if(msg){
+
+    texto +=
+    '\n*Mensagem:* '
+    + msg;
+
+  }
+
+
+  /* =========================
+     WHATSAPP
+  ========================= */
 
   window.open(
-    'https://wa.me/258852652545?text='+encodeURIComponent(texto),
+
+    'https://wa.me/258852652545?text='
+    + encodeURIComponent(texto),
+
     '_blank'
+
   );
+
 });
-</script>'''
-html = html[:script_start] + script + html[script_end:]
 
-# 8) Add logo in footer/nav if not already there.
-html = html.replace(
-    '<div class="logo"><span class="logo-badge">⚡</span>FRANCITEC</div>',
-    '<div class="logo"><img src="images/ea6c6c31-4a01-4f9e-9559-5ffb99e8fa6c.jpg" class="logo-img" alt="Francitec"><span>FRANCITEC</span></div>'
-)
+</script>
 
-# 9) Add payment CSS if missing.
-payment_css = r'''
-.pagamento{background:#fff}
-.pagamento-head{text-align:center;margin-bottom:40px}
-.pagamento-head .lead{max-width:680px;margin:12px auto 0}
-.pagamento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.pagamento-card{background:#fff;border:1px solid #e5ebf2;border-radius:18px;padding:28px 22px;text-align:center;box-shadow:0 4px 14px rgba(10,37,64,.07);position:relative}
-.pagamento-card.destaque{border:2px solid var(--gold)}
-.pagamento-selo{position:absolute;top:12px;right:12px;background:var(--orange);color:#fff;font-size:.63rem;font-weight:800;padding:5px 8px;border-radius:6px}
-.pagamento-icon{width:58px;height:58px;margin:0 auto 15px;border-radius:14px;background:#eef4fb;display:grid;place-items:center;font-size:1.55rem}
-.pagamento-card h3{color:var(--navy);font-size:1.08rem}
-.pagamento-preco{font-size:2.1rem;font-weight:900;color:var(--navy);margin:10px 0}
-.pagamento-preco small{font-size:.85rem;color:var(--muted)}
-.pagamento-card p{font-size:.82rem;color:var(--muted);min-height:58px;margin-bottom:18px}
-.pagamento-card .btn{width:100%}
-.mpesa-info{max-width:900px;margin:30px auto 0;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:18px;padding:25px 28px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow)}
-.mpesa-icon{width:58px;height:58px;flex-shrink:0;border-radius:14px;background:rgba(245,184,0,.18);display:grid;place-items:center;font-size:1.5rem}
-.mpesa-info h3{color:#fff;margin-bottom:4px}
-.mpesa-info p{font-size:.84rem;color:rgba(255,255,255,.8)}
-.mpesa-number{display:block;color:var(--gold);font-size:1.45rem}
-.mpesa-holder{display:block;font-size:.84rem;font-weight:700}
-.mpesa-info small{display:block;color:rgba(255,255,255,.65);font-size:.72rem;margin-top:4px}
-'''
-html = html.replace('</style>', payment_css + '\n</style>')
-
-# 10) Responsive payment rules.
-responsive = r'''
-@media(max-width:900px){
-  .pagamento-grid{grid-template-columns:1fr}
-}
-@media(max-width:640px){
-  .mpesa-info{flex-direction:column;text-align:center;padding:22px 18px}
-}
-'''
-html = html.replace('</style>', responsive + '\n</style>', 1)
-
-# Fix duplicate/invalid accidental schedule replacement if any and ensure title.
-html = html.replace('<title>Francitec — Centro de Formação Profissional | Maputo</title>',
-                    '<title>Francitec — Centro de Formação Profissional | Maputo, Moçambique</title>')
-
-path.write_text(html, encoding="utf-8")
-print(f"Novo index.html completo criado em: {path}")
-print("Incluído: pagamentos TED + M-Pesa, PV a 2.670 MT/mês, promoção sem PV, e 5.º turno 15:00–17:00.")
+</body>
+</html>
