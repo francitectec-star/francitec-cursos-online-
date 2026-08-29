@@ -15,18 +15,19 @@
   <p>Esta página está ligada à API de pagamentos.</p>
 
   <button onclick="testarPagamento()"
-    style="padding: 15px 25px; font-size: 18px;">
+          style="padding: 15px 25px; font-size: 18px;">
     TESTAR PAGAMENTO
   </button>
 
-  <p id="resultado" style="margin-top: 30px;"></p>
+  <div id="resultado" style="margin-top: 30px; white-space: pre-wrap;"></div>
 
 <script>
+
 async function testarPagamento() {
 
   const resultado = document.getElementById("resultado");
 
-  resultado.innerHTML = "A testar...";
+  resultado.innerHTML = "⏳ A conectar à API...";
 
   try {
 
@@ -34,9 +35,11 @@ async function testarPagamento() {
       "https://francitec-payments-api.onrender.com/test-payment",
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
           amount: 100,
           student: "Aluno de teste"
@@ -46,22 +49,21 @@ async function testarPagamento() {
 
     const texto = await resposta.text();
 
-try {
-    const dados = JSON.parse(texto);
+    resultado.innerHTML =
+      "Código HTTP: " + resposta.status +
+      "\n\nResposta da API:\n" +
+      texto;
+
+  } catch (erro) {
 
     resultado.innerHTML =
-        "<strong>Resposta da API:</strong><br><pre>" +
-        JSON.stringify(dados, null, 2) +
-        "</pre>";
+      "❌ ERRO DE CONEXÃO\n\n" +
+      erro.message;
 
-} catch (e) {
-
-    resultado.innerHTML =
-        "<strong>A API respondeu, mas não enviou JSON:</strong><br><pre>" +
-        texto +
-        "</pre>";
   }
+
 }
+
 </script>
 
 </body>
