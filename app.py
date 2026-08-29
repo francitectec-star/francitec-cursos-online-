@@ -37,6 +37,15 @@ def test_payment():
         "transaction_id": "TEST-" + os.urandom(6).hex()
     })
 
+@app.route("/webhook/payted", methods=["POST"])
+def webhook_payted():
+    data = request.get_json(silent=True) or {}
 
+    print("WEBHOOK PAYTED RECEBIDO:", data)
+
+    return jsonify({
+        "success": True,
+        "message": "Webhook recebido com sucesso"
+    }), 200
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
