@@ -20,6 +20,14 @@ window.CURSOS_DADOS={
     {id:'hst',nome:'HST — Higiene e Segurança no Trabalho',categoria:'Segurança',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado 07h–13h',precoNormal:1485,inscricaoNormal:800,taxaCertificado:null,disponivel:true,descricao:'Higiene e segurança no trabalho: normas, prevenção e boas práticas profissionais.',condicoes:'Valor de Sábado — inscrição 800 MT e mensalidade 1.485 MT.',imagem:'',variantes:[]},{id:'secre',nome:'Secretariado Executivo',categoria:'Administração',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Secretariado, atendimento, gestão documental e escritório.',condicoes:'',imagem:'',variantes:[]}
   ],
   galeria:[
+    {img:'images/grad-1.jpg',tag:'🎓 Graduação 2026',titulo:'Momento de alegria',legenda:'Formandos celebram a conclusão, erguendo os diplomas.'},
+    {img:'images/grad-2.jpg',tag:'🎓 Graduação 2026',titulo:'Entrega de diplomas',legenda:'Cerimónia sob a tenda oficial da FRANCITEC.'},
+    {img:'images/grad-3.jpg',tag:'🎓 Graduação 2026',titulo:'Orgulho FRANCITEC',legenda:'Formandos com o estandarte oficial do Centro.'},
+    {img:'images/grad-4.jpg',tag:'🎓 Graduação 2026',titulo:'Dia inesquecível',legenda:'Formandos e convidados na 1.ª fase da graduação.'},
+    {img:'images/grad-5.jpg',tag:'🎓 Graduação 2026',titulo:'Missão cumprida',legenda:'Diplomas na mão, futuro garantido.'},
+    {img:'images/grad-6.jpg',tag:'🎓 Graduação 2026',titulo:'A sua profissão começa aqui',legenda:'Palavras de encorajamento à turma graduada.'},
+    {img:'images/grad-7.jpg',tag:'🎓 Graduação 2026',titulo:'Turma 2026',legenda:'Formandos e convidados na cerimónia de graduação.'},
+    {img:'images/grad-8.jpg',tag:'🎓 Graduação 2026',titulo:'Turma 2026 — mérito',legenda:'Destaque dos formandos do ano.'},
     {img:'images/6ece3ebc-4157-456a-ab3a-e15cf0c9263d.jpg',tag:'🔧 Mecânica Auto',titulo:'Aula prática',legenda:'Prática em oficina.'},
     {img:'images/8aab920a-8b89-4ce7-90f7-610da4fbb1f9.jpg',tag:'🔧 Mecânica Auto',titulo:'Prática',legenda:'Diagnóstico e desmontagem.'},
     {img:'images/d0a6986e-112a-46dd-97c4-6d66625ba507.jpg',tag:'🔧 Mecânica Auto',titulo:'Formação prática',legenda:'Manutenção automóvel.'},
@@ -35,7 +43,7 @@ window.CURSOS_DADOS={
     {img:'images/afd18610-3991-4000-aef4-263b4cde978b.jpg',tag:'🖥️ Informática Avançada',titulo:'Excel e manutenção',legenda:'Ferramentas digitais de trabalho.'},
     {img:'images/9e757c97-1203-4d69-b5ee-152e5f558682.jpg',tag:'🇬🇧 Inglês',titulo:'Inglês geral',legenda:'Expressão oral e escrita.'},
     {img:'images/62fef9a6-397a-4d7e-9e8e-fb493fec852b.jpg',tag:'🏢 Secretariado',titulo:'Gestão de escritório',legenda:'Atendimento e documentação.'},
-    {img:'images/ab93860e-572c-44d8-817b-6a6d2fa5345f.jpg',tag:'🦺 HST',titulo:'Segurança no trabalho',legenda:'Normas e prevenção.'}
+    {img:'images/ab93860e-572c-44d8-817b-6a6d2fa5345f.jpg',tag:'🦺 HST',titulo:'Segurança no trabalho',legenda:'Normas e prevenção.'},
   ],
   promocoes:[
     {id:'p2027-ei-s', cursoId:'ele-inst', variante:'semana',  precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},

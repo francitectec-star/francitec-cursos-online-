@@ -8,6 +8,7 @@
       .then(function(j){
         if(j&&j.dados){
           var srv=j.dados, sd=window.CURSOS_DADOS;
+          window.CURSOS_DADOS_SEED=window.CURSOS_DADOS_SEED||JSON.parse(JSON.stringify(sd));
           var tem=(srv.cursos&&srv.cursos.length)||(srv.galeria&&srv.galeria.length);
           if(tem){
             sd.galeria=(srv.galeria&&srv.galeria.length)?srv.galeria:(sd.galeria||[]);
