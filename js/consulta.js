@@ -45,7 +45,23 @@
       +'<div class="cz-nota">A abertura do WhatsApp não reserva a vaga — a inscrição é confirmada pela secretaria.</div></div>';
     return h;
   }
+  function tabelaNormais(){
+    var box=document.getElementById('cz-tabela-normais');if(!box)return;
+    var linhas=(window.CURSOS_DADOS.cursos||[]).filter(function(c){return c.disponivel!==false;}).map(function(c){
+      var info=ENG.preco(window.CURSOS_DADOS,c.id);
+      var est=info.estado==='PROMOCAO'?'<span class="cz-badge cz-ativa">PROMOÇÃO '+ENG.dataBR(info.fim)+'</span>':'<span class="cz-badge">Preço normal</span>';
+      return '<tr><td class="cz-tnome">'+c.nome+'</td><td>'+c.duracao+'</td><td>'+c.modalidade+'</td>'
+        +'<td class="cz-tnum">'+ENG.fmt(info.normalMensalidade)+'</td>'
+        +'<td class="cz-tnum">'+ENG.fmt(info.normalInscricao)+'</td>'
+        +'<td class="cz-tnum">'+(c.taxaCertificado?ENG.fmt(c.taxaCertificado):'—')+'</td>'
+        +'<td>'+(info.estado==='PROMOCAO'?'<b style="color:#1a7a3f">'+ENG.fmt(info.mensalidade)+'</b>':'<b>'+ENG.fmt(info.mensalidade)+'</b>')+'</td>'
+        +'<td>'+est+'</td></tr>';
+    }).join('');
+    box.innerHTML='<div class="cz-twrap"><table><tr><th>Curso</th><th>Duração</th><th>Modalidade</th><th>Mensalidade normal</th><th>Inscrição normal</th><th>Certificado</th><th>Agora</th><th>Estado</th></tr>'+linhas+'</table></div>'
+      +'<p class="cz-nota">Tabela completa de preços normais. Durante a campanha, a coluna «Agora» mostra o valor promocional — terminada a promoção, o normal volta a valer automaticamente.</p>';
+  }
   function render(){
+    tabelaNormais();
     var box=document.getElementById('cz-resultados');if(!box)return;
     var lista=passamFiltro();
     box.innerHTML=lista.length?lista.map(ficha).join(''):'<p class="cz-vazio">Nenhum curso encontrado. Tente outro termo ou filtro.</p>';
