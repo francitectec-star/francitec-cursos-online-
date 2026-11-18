@@ -41,7 +41,7 @@ function entrar(){
 function carregar(){
   fetch(BASE+'/api/public/cursos',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
     D=j.dados||window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[]};
-    D.promocoes=D.promocoes||[];D.historico=D.historico||[];D.cursos=D.cursos||[];
+    D.promocoes=D.promocoes||[];D.historico=D.historico||[];D.cursos=D.cursos||[];D.galeria=D.galeria||[];
     desenhar();
   }).catch(function(e){alert('Servidor indisponível: '+e.message);});
 }
@@ -93,6 +93,7 @@ function desenhar(){
       +'<td><button class="cinza" onclick="prolongar('+px+')">⏱ +7 dias</button> <button class="cinza" onclick="D.promocoes['+px+'].suspensa=!D.promocoes['+px+'].suspensa;desenhar()">'+(pr.suspensa?'▶ Retomar':'⏸ Suspender')+'</button> <button class="verm" onclick="D.promocoes.splice('+px+',1);desenhar()">✕</button></td></tr>';
   });
   h+='</table></div>';
+  h+=cartaoGaleria();
   h+='<div class="card"><b>Histórico ('+D.historico.length+')</b><table><tr><th>Quando</th><th>Curso</th><th>De → Para</th><th>Por</th><th>Motivo</th></tr>';
   D.historico.slice(-10).reverse().forEach(function(x){h+='<tr><td>'+String(x.quando||'').slice(0,16).replace('T',' ')+'</td><td>'+esc(x.curso||'—')+'</td><td>'+fmt(x.de)+' → '+fmt(x.para)+'</td><td>'+esc(x.por||'—')+'</td><td>'+esc(x.motivo||'—')+'</td></tr>';});
   if(!D.historico.length)h+='<tr><td colspan="5"><small>Sem alterações registadas ainda.</small></td></tr>';
@@ -161,6 +162,43 @@ function fichaCompleta(ix){
 }
 function hist2(curso,campo,de,para){
   D.historico.push({quando:new Date().toISOString(),curso:curso,campo:campo,de:de,para:para,por:sessionStorage.getItem('cz_qm')||'',motivo:'edição no painel'});
+}
+
+
+function cartaoGaleria(){
+  var g=D.galeria||[];
+  if(!Array.isArray(D.galeria))D.galeria=[];
+  var linhas=g.map(function(x,ix){
+    return '<tr><td><img src="'+esc(x.img)+'" style="height:44px;border-radius:6px"></td>'
+      +'<td><input size="16" value="'+esc(x.tag||'')+'" onchange="D.galeria['+ix+'].tag=this.value" placeholder="🏷 etiqueta"></td>'
+      +'<td><input size="16" value="'+esc(x.titulo||'')+'" onchange="D.galeria['+ix+'].titulo=this.value" placeholder="título"></td>'
+      +'<td><input size="22" value="'+esc(x.legenda||'')+'" onchange="D.galeria['+ix+'].legenda=this.value" placeholder="legenda"></td>'
+      +'<td><button class="cinza" onclick="galMover('+ix+',-1)" title="subir">▲</button> <button class="cinza" onclick="galMover('+ix+',1)" title="descer">▼</button> <button class="verm" onclick="if(confirm(\'Remover esta foto da galeria?\')){D.galeria.splice('+ix+',1);desenhar()}">✕</button></td></tr>';
+  }).join('');
+  return '<div class="card"><b>Galeria de fotografias ('+g.length+')</b> — ordem, textos e remoção. As fotos novas entram no fim.<button class="verde" style="float:right" onclick="galAdicionar()">➕ Adicionar foto</button>'
+    +'<table style="margin-top:10px"><tr><th>Foto</th><th>Etiqueta</th><th>Título</th><th>Legenda</th><th>Ordem / Remover</th></tr>'
+    +(linhas||'<tr><td colspan="5"><small>Sem fotos na galeria.</small></td></tr>')+'</table></div>';
+}
+function galMover(ix,dx){
+  var g=D.galeria;var j=ix+dx;if(j<0||j>=g.length)return;
+  var t=g[ix];g[ix]=g[j];g[j]=t;desenhar();
+}
+function galAdicionar(){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=function(){
+    var file=inp.files[0];if(!file)return;
+    var rd=new FileReader();
+    rd.onload=function(){var img=new Image();img.onload=function(){
+      var max=800,esc3=Math.min(1,max/Math.max(img.width,img.height));
+      var cv=document.createElement('canvas');cv.width=Math.round(img.width*esc3);cv.height=Math.round(img.height*esc3);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      if(!Array.isArray(D.galeria))D.galeria=[];
+      D.galeria.push({img:cv.toDataURL('image/jpeg',0.75),tag:'',titulo:'',legenda:''});
+      desenhar();
+    };img.src=rd.result;};
+    rd.readAsDataURL(file);
+  };
+  inp.click();
 }
 
 function novoCurso(){
