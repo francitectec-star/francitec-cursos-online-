@@ -70,7 +70,7 @@ function desenhar(){
   var P=document.getElementById('painel');P.hidden=false;
   document.getElementById('quem').textContent='Sessão: '+(sessionStorage.getItem('cz_qm')||'');
   var h='<div class="card"><b>Cursos ('+D.cursos.length+')</b> — edite e clique «Publicar». Preços independentes por curso.<button class="verde" style="float:right" onclick="guardar()">💾 Publicar alterações</button><button class="cinza" style="float:right;margin-right:6px" onclick="novoCurso()">➕ Criar curso</button><button class="cinza" style="float:right;margin-right:6px" onclick="baixar()">⬇ Cópia de segurança</button></div>';
-  h+='<div class="card"><table><tr><th>Curso</th><th>Duração</th><th>Modalidade</th><th>Mensal. normal</th><th>Inscrição</th><th>Certificado</th><th>Estado</th></tr>';
+  h+='<div class="card"><table><tr><th>Curso</th><th>Duração</th><th>Modalidade</th><th>Mensal. normal</th><th>Inscrição</th><th>Certificado</th><th>Estado</th><th>Ficha / Foto</th></tr>';
   D.cursos.forEach(function(c,ix){
     h+='<tr><td><input value="'+esc(c.nome)+'" onchange="D.cursos['+ix+'].nome=this.value"><br><small>'+esc(c.categoria||'')+'</small></td>'
       +'<td><input size="8" value="'+esc(c.duracao||'')+'" onchange="D.cursos['+ix+'].duracao=this.value"></td>'
@@ -78,7 +78,8 @@ function desenhar(){
       +'<td><input size="7" type="number" min="0" value="'+Number(c.precoNormal||0)+'" onchange="D.cursos['+ix+'].precoNormal=Number(this.value);hist(this,\'preço mensalidade\',\''+esc(c.nome)+'\')"></td>'
       +'<td><input size="7" type="number" min="0" value="'+Number(c.inscricaoNormal||0)+'" onchange="D.cursos['+ix+'].inscricaoNormal=Number(this.value)"></td>'
       +'<td><input size="7" type="number" min="0" value="'+Number(c.taxaCertificado||0)+'" onchange="D.cursos['+ix+'].taxaCertificado=Number(this.value)||null"></td>'
-      +'<td><button class="cinza" onclick="D.cursos['+ix+'].disponivel=!D.cursos['+ix+'].disponivel;desenhar()">'+(c.disponivel===false?'⚪ Inativo':'🟢 Activo')+'</button> <button class="verm" onclick="if(confirm(\'Apagar '+esc(c.nome)+'?\')){D.cursos.splice('+ix+',1);desenhar()}">✕</button></td></tr>';
+      +'<td><button class="cinza" onclick="D.cursos['+ix+'].disponivel=!D.cursos['+ix+'].disponivel;desenhar()">'+(c.disponivel===false?'⚪ Inativo':'🟢 Activo')+'</button> <button class="verm" onclick="if(confirm(\'Apagar '+esc(c.nome)+'?\')){D.cursos.splice('+ix+',1);desenhar()}">✕</button></td>'
+      +'<td><button class="pri" onclick="fichaCompleta('+ix+')">✏️ Ficha completa</button>'+(c.imagem?' <img src="'+esc(c.imagem)+'" style="height:26px;border-radius:6px;vertical-align:middle">':' <small style="color:#98a1ad">sem foto</small>')+'</td></tr>';
   });
   h+='</table></div>';
   h+='<div class="card"><b>Campanhas promocionais ('+D.promocoes.length+')</b><button class="verde" style="float:right" onclick="novaPromo()">➕ Nova campanha</button>';
@@ -102,10 +103,71 @@ function hist(el,tipo,nome){
   var linha={quando:new Date().toISOString(),curso:nome,campo:tipo,de:'(ver cópia de segurança)',para:el.value,por:sessionStorage.getItem('cz_qm')||''};
   D.historico.push(linha);
 }
+
+function fichaCompleta(ix){
+  var c=D.cursos[ix];
+  var div=document.createElement('div');
+  div.innerHTML='<div class="card" style="position:fixed;inset:14px auto auto 50%;transform:translateX(-50%);box-shadow:0 10px 40px rgba(0,0,0,.35);z-index:99;width:min(560px,94vw);max-height:88vh;overflow:auto">'
+   +'<b>Ficha completa — '+esc(c.nome)+'</b><br><small>Tudo o que está aqui aparece no website depois de «Publicar».</small>'
+   +'<p>Nome<br><input id="fc-nome" style="width:100%" value="'+esc(c.nome)+'"></p>'
+   +'<p>Categoria / área<br><input id="fc-cat" style="width:100%" value="'+esc(c.categoria||'')+'"></p>'
+   +'<p>Descrição<br><textarea id="fc-desc" rows="2" style="width:100%">'+esc(c.descricao||'')+'</textarea></p>'
+   +'<p>Duração<br><input id="fc-dur" style="width:100%" value="'+esc(c.duracao||'')+'"></p>'
+   +'<p>Modalidade<br><input id="fc-mod" style="width:100%" value="'+esc(c.modalidade||'')+'"></p>'
+   +'<p>Horários disponíveis<br><input id="fc-hor" style="width:100%" value="'+esc(c.horarios||'')+'" placeholder="Ex.: Seg-Qua-Sex 08h-11h · Sábado 07h-13h"></p>'
+   +'<p>Mensalidade normal (MT)<br><input id="fc-pn" type="number" min="0" step="1" value="'+Number(c.precoNormal||0)+'"></p>'
+   +'<p>Inscrição normal (MT)<br><input id="fc-in" type="number" min="0" step="1" value="'+Number(c.inscricaoNormal||0)+'"></p>'
+   +'<p>Taxa de certificado (MT — vazio se não tem)<br><input id="fc-tc" type="number" min="0" step="1" value="'+(c.taxaCertificado==null?'':Number(c.taxaCertificado))+'"></p>'
+   +'<p>Condições especiais de inscrição<br><textarea id="fc-cond" rows="2" style="width:100%">'+esc(c.condicoes||'')+'</textarea></p>'
+   +'<p>Fotografia do curso<br><span id="fc-prev">'+(c.imagem?'<img src="'+esc(c.imagem)+'" style="max-height:70px;border-radius:8px;display:block;margin-bottom:6px">':'<small>Ainda sem foto.</small>')+'</span>'
+   +'<input type="file" id="fc-img" accept="image/*" style="font-size:12px"> <button class="verm" id="fc-rmimg" style="font-size:11px;padding:5px 9px">Remover foto</button><br><small>A imagem é reduzida automaticamente (máx. 640 px) para o site continuar rápido.</small></p>'
+   +'<p>Variantes de horário/preço (opcional, avançado)<br><textarea id="fc-var" rows="2" style="width:100%;font-size:11px">'+esc(JSON.stringify(c.variantes||[]))+'</textarea><br><small>Ex.: [{"modalidade":"Sábado (3 meses)","mensalidade":1485,"inscricao":800}] — deixe [] se não há variantes.</small></p>'
+   +'<button class="pri" id="fc-ok">💾 Guardar ficha</button> <button class="cinza" id="fc-no">Cancelar</button></div>';
+  document.body.appendChild(div);
+  var novaImg=c.imagem||'';
+  div.querySelector('#fc-img').onchange=function(){
+    var file=this.files[0];if(!file)return;
+    var rd=new FileReader();
+    rd.onload=function(){var img=new Image();img.onload=function(){
+      var max=640,esc2=Math.min(1,max/Math.max(img.width,img.height));
+      var cv=document.createElement('canvas');cv.width=Math.round(img.width*esc2);cv.height=Math.round(img.height*esc2);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      novaImg=cv.toDataURL('image/jpeg',0.75);
+      div.querySelector('#fc-prev').innerHTML='<img src="'+novaImg+'" style="max-height:70px;border-radius:8px;display:block;margin-bottom:6px">';
+    };img.src=rd.result;};
+    rd.readAsDataURL(file);
+  };
+  div.querySelector('#fc-rmimg').onclick=function(){novaImg='';div.querySelector('#fc-prev').innerHTML='<small>Foto removida.</small>';};
+  div.querySelector('#fc-no').onclick=function(){document.body.removeChild(div);};
+  div.querySelector('#fc-ok').onclick=function(){
+    var pn=Number(div.querySelector('#fc-pn').value),inp=Number(div.querySelector('#fc-in').value);
+    if(pn<0||inp<0){alert('Preços não podem ser negativos.');return;}
+    if(!div.querySelector('#fc-nome').value.trim()){alert('Nome obrigatório.');return;}
+    var tcv=div.querySelector('#fc-tc').value;
+    if(String(pn)!==String(Number(c.precoNormal||0)))hist2(c.nome,'preço mensalidade',c.precoNormal,pn);
+    c.nome=div.querySelector('#fc-nome').value.trim();
+    c.categoria=div.querySelector('#fc-cat').value.trim();
+    c.descricao=div.querySelector('#fc-desc').value.trim();
+    c.duracao=div.querySelector('#fc-dur').value.trim();
+    c.modalidade=div.querySelector('#fc-mod').value.trim();
+    c.horarios=div.querySelector('#fc-hor').value.trim();
+    c.precoNormal=pn;c.inscricaoNormal=inp;
+    c.taxaCertificado=tcv===''?null:Number(tcv);
+    c.condicoes=div.querySelector('#fc-cond').value.trim();
+    c.imagem=novaImg;
+    try{c.variantes=JSON.parse(div.querySelector('#fc-var').value||'[]');}catch(e){alert('Variantes: JSON inválido — mantidas as anteriores.');}
+    document.body.removeChild(div);desenhar();
+  };
+}
+function hist2(curso,campo,de,para){
+  D.historico.push({quando:new Date().toISOString(),curso:curso,campo:campo,de:de,para:para,por:sessionStorage.getItem('cz_qm')||'',motivo:'edição no painel'});
+}
+
 function novoCurso(){
   var n=prompt('Nome do novo curso:');if(!n)return;
   D.cursos.push({id:'c'+Date.now(),nome:n,categoria:'Geral',duracao:'—',modalidade:'Segunda a sexta',horarios:'',precoNormal:0,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'',condicoes:'',imagem:'',variantes:[]});
   desenhar();
+  fichaCompleta(D.cursos.length-1);
 }
 function novaPromo(){
   if(!D.cursos.length){alert('Crie primeiro um curso.');return;}

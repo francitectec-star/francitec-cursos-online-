@@ -25,6 +25,7 @@
   function ficha(c){
     var info=ENG.preco(window.CURSOS_DADOS,c.id);
     var h='<div class="cz-card" data-id="'+c.id+'">'
+      +(c.imagem?'<img class="cz-img" src="'+c.imagem+'" alt="'+c.nome+'" style="width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:10px">':'')
       +'<div class="cz-nome">'+c.nome+'</div>'
       +'<div class="cz-meta">'+(c.categoria||'')+' · '+c.duracao+' · '+c.modalidade+'</div>';
     if(info.estado==='PROMOCAO'){
@@ -38,6 +39,7 @@
       if(prF.length)h+='<span class="cz-badge">'+ENG.estado(prF[0])+(prF[0].inicio&&ENG.estado(prF[0])==='AGENDADA'?' desde '+ENG.dataBR(prF[0].inicio):'')+'</span>';
     }
     h+='<div class="cz-insc">Inscrição: '+ENG.fmt(info.inscricao)+(c.taxaCertificado?' · Certificado: '+ENG.fmt(c.taxaCertificado):'')+'</div>';
+    if(c.horarios)h+='<div class="cz-cond">🕒 '+c.horarios+'</div>';
     if(c.descricao)h+='<div class="cz-desc">'+c.descricao+'</div>';
     if(c.condicoes)h+='<div class="cz-cond">'+c.condicoes+'</div>';
     if((c.variantes||[]).length)h+='<div class="cz-cond">Sábados: '+c.variantes.map(function(v){return v.modalidade+' — '+ENG.fmt(v.inscricao)+' inscrição · '+ENG.fmt(v.mensalidade)+'/mês';}).join(' · ')+'</div>';
