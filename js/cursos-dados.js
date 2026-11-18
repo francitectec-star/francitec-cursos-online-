@@ -6,21 +6,33 @@ window.CURSOS_DADOS={
   versao:'2.0',
   contactos:{whatsapp:'852652545',telefones:'841069443 | 852652545'},
   cursos:[
-    {id:'ele-inst',nome:'Eletricidade Instaladora',categoria:'Electricidade',duracao:'6 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex (turnos) · Sábado 07h–13h',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalações elétricas residenciais, comerciais e industriais, quadros, esquemas e segurança.',condicoes:'Requisitos: cópia de BI, 2 fotos tipo passe, certificado da 9.ª ou 10.ª classe.',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:350,inscricao:350}]},
-    {id:'ele-ind',nome:'Eletricidade Industrial',categoria:'Electricidade',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Comandos elétricos, manutenção, automação e partida de motores.',condicoes:'',imagem:'',variantes:[]},
-    {id:'mec-auto',nome:'Mecânica Auto',categoria:'Mecânica',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Diagnóstico, manutenção preventiva e corretiva e prática em veículos.',condicoes:'',imagem:'',variantes:[]},
-    {id:'maq-cmd',nome:'Máquinas e Comandos Elétricos',categoria:'Electricidade',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado 07h–13h',precoNormal:350,inscricaoNormal:350,taxaCertificado:null,disponivel:true,descricao:'Painéis, comandos e dimensionamento de sistemas elétricos.',condicoes:'Valor de Sábado — inscrição 350 MT e mensalidade 350 MT.',imagem:'',variantes:[]},
-    {id:'solar',nome:'Sistema Fotovoltaico',categoria:'Energia',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado',precoNormal:4000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalação, configuração e dimensionamento de sistemas solares.',condicoes:'Não participa das promoções de Sábado.',imagem:'',variantes:[]},
-    {id:'inf-bas',nome:'Informática Básica',categoria:'Informática',duracao:'2 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex · Sábado 07h–13h',precoNormal:1000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Computador, internet, Word, Excel e competências digitais essenciais.',condicoes:'',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:350,inscricao:350}]},
+    {id:'ele-inst',nome:'Eletricidade Instaladora',categoria:'Electricidade',duracao:'6 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex (turnos) · Sábado 07h–13h',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalações elétricas residenciais, comerciais e industriais, quadros, esquemas e segurança.',condicoes:'Requisitos: cópia de BI, 2 fotos tipo passe, certificado da 9.ª ou 10.ª classe.',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:1485,inscricao:800}]},
+    {id:'ele-ind',nome:'Eletricidade Industrial',categoria:'Electricidade',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:2500,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Comandos elétricos, manutenção, automação e partida de motores.',condicoes:'',imagem:'',variantes:[]},
+    {id:'mec-auto',nome:'Mecânica Auto',categoria:'Mecânica',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:3000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Diagnóstico, manutenção preventiva e corretiva e prática em veículos.',condicoes:'',imagem:'',variantes:[]},
+    {id:'maq-cmd',nome:'Máquinas e Comandos Elétricos',categoria:'Electricidade',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado 07h–13h',precoNormal:1485,inscricaoNormal:800,taxaCertificado:null,disponivel:true,descricao:'Painéis, comandos e dimensionamento de sistemas elétricos.',condicoes:'Valor de Sábado — inscrição 350 MT e mensalidade 350 MT.',imagem:'',variantes:[]},
+    {id:'solar',nome:'Sistema Fotovoltaico',categoria:'Energia',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado',precoNormal:4000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalação, configuração e dimensionamento de sistemas solares.',condicoes:'Não participa das promoções de Sábado.',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:2670,inscricao:800}]},
+    {id:'inf-bas',nome:'Informática Básica',categoria:'Informática',duracao:'2 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex · Sábado 07h–13h',precoNormal:1000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Computador, internet, Word, Excel e competências digitais essenciais.',condicoes:'',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:800,inscricao:800}]},
     {id:'inf-av',nome:'Informática Avançada',categoria:'Informática',duracao:'2 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Excel avançado, manutenção de computadores e ferramentas digitais de trabalho.',condicoes:'',imagem:'',variantes:[]},
-    {id:'edu-inf',nome:'Educação de Infância',categoria:'Educação',duracao:'6 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex · Sábado',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Pedagogia, desenvolvimento infantil e prática de sala de aula.',condicoes:'Valor de Sábado — inscrição 800 MT e mensalidade 800 MT.',imagem:'',variantes:[{modalidade:'Sábado (3 meses)',mensalidade:800,inscricao:800}]},
+    {id:'edu-inf',nome:'Educação de Infância',categoria:'Educação',duracao:'6 meses',modalidade:'Segunda a sexta ou Sábado',horarios:'Seg–Sex · Sábado',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Pedagogia, desenvolvimento infantil e prática de sala de aula.',condicoes:'Valor de Sábado — inscrição 800 MT e mensalidade 800 MT.',imagem:'',variantes:[{modalidade:'Sábado',mensalidade:1200,inscricao:800}]},
     {id:'refri',nome:'Refrigeração',categoria:'Técnico',duracao:'3 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalação, manutenção e reparação de sistemas de frio e climatização.',condicoes:'',imagem:'',variantes:[]},
     {id:'canal',nome:'Canalização',categoria:'Construção',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:1800,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Instalações hidráulicas, redes de água e esgotos, manutenção e reparação.',condicoes:'',imagem:'',variantes:[]},
     {id:'ingles',nome:'Inglês',categoria:'Línguas',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:600,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Inglês geral: compreensão, expressão oral e escrita.',condicoes:'',imagem:'',variantes:[]},
-    {id:'secre',nome:'Secretariado Executivo',categoria:'Administração',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Secretariado, atendimento, gestão documental e escritório.',condicoes:'',imagem:'',variantes:[]}
+    {id:'hst',nome:'HST — Higiene e Segurança no Trabalho',categoria:'Segurança',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado 07h–13h',precoNormal:1485,inscricaoNormal:800,taxaCertificado:null,disponivel:true,descricao:'Higiene e segurança no trabalho: normas, prevenção e boas práticas profissionais.',condicoes:'Valor de Sábado — inscrição 800 MT e mensalidade 1.485 MT.',imagem:'',variantes:[]},{id:'secre',nome:'Secretariado Executivo',categoria:'Administração',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Secretariado, atendimento, gestão documental e escritório.',condicoes:'',imagem:'',variantes:[]}
   ],
-  promocoes:[],
-  historico:[]
+  promocoes:[
+    {id:'p2027-ei-s', cursoId:'ele-inst', variante:'semana',  precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-ei-b', cursoId:'ele-inst', variante:'sabado',  precoMensalidadePromo:350,  precoInscricaoPromo:350, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027 — Sábados', suspensa:false},
+    {id:'p2027-eind', cursoId:'ele-ind',  precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-ma',   cursoId:'mec-auto', precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-mq',   cursoId:'maq-cmd',  precoMensalidadePromo:350,  precoInscricaoPromo:350, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027 — Sábados', suspensa:false},
+    {id:'p2027-ei2',  cursoId:'edu-inf',  variante:'semana',  precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-eib',  cursoId:'edu-inf',  variante:'sabado',  precoMensalidadePromo:800,  precoInscricaoPromo:800, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027 — Sábados', suspensa:false},
+    {id:'p2027-ib',   cursoId:'inf-bas',  variante:'sabado',  precoMensalidadePromo:350,  precoInscricaoPromo:350, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027 — Sábados', suspensa:false},
+    {id:'p2027-ref',  cursoId:'refri',    precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-can',  cursoId:'canal',    precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
+    {id:'p2027-sec',  cursoId:'secre',    precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false}
+  ],
+  historico:[{quando:'2026-11-18T20:40:00',curso:'(todos)',campo:'preços normais',de:'(campanhas anteriores)',para:'conforme cartazes oficiais (semana + sábados)',por:'Direcção',motivo:'Alinhamento com cartazes impressos'}]
 };
 /* ===== MOTOR DE PROMOÇÕES — fuso de Moçambique (Africa/Maputo, UTC+2) ===== */
 window.SPI_PROMO={
@@ -34,9 +46,13 @@ window.SPI_PROMO={
     return 'ACTIVA';
   },
   /* melhor promoção ACTIVA aplicável ao curso (não acumula: escolhe a de maior poupança) */
-  paraCurso:function(cursosDados,cursoId){
+  paraCurso:function(cursosDados,cursoId,variante){
     var lista=(cursosDados.promocoes||[]).filter(function(pr){
-      return (pr.cursoId===cursoId||pr.cursoId==='*')&&window.SPI_PROMO.estado(pr)==='ACTIVA'&&pr.ativa!==false;});
+      if(pr.cursoId!==cursoId&&pr.cursoId!=='*')return false;
+      if(window.SPI_PROMO.estado(pr)!=='ACTIVA'||pr.ativa===false)return false;
+      if(pr.variante==='semana'&&variante)return false;
+      if(pr.variante==='sabado'&&!variante)return false;
+      return true;});
     if(!lista.length)return null;
     lista.sort(function(a,b){return (Number(a.descontoTotal)||0)-(Number(b.descontoTotal)||0);});
     return lista[0];
@@ -46,7 +62,7 @@ window.SPI_PROMO={
     if(!c)return null;
     var v=(variante&&c.variantes||[]).find(function(x){return x.modalidade===variante;})||null;
     var base={mensalidade:v?Number(v.mensalidade):Number(c.precoNormal),inscricao:v?Number(v.inscricao):Number(c.inscricaoNormal),normalMensalidade:v?Number(v.mensalidade):Number(c.precoNormal),normalInscricao:v?Number(v.inscricao):Number(c.inscricaoNormal),promocao:null,estado:'NORMAL'};
-    var pr=this.paraCurso(cursosDados,cursoId);
+    var pr=this.paraCurso(cursosDados,cursoId,variante);
     if(pr){
       var pM=pr.precoMensalidadePromo!=null?Number(pr.precoMensalidadePromo):base.mensalidade;
       var pI=pr.precoInscricaoPromo!=null?Number(pr.precoInscricaoPromo):base.inscricao;
