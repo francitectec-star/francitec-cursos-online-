@@ -5,7 +5,7 @@
   function carregar(){
     fetch('https://spi-francitec.onrender.com/api/public/cursos',{cache:'no-store'})
       .then(function(r){return r.json();})
-      .then(function(j){ if(j&&j.dados&&Array.isArray(j.dados.cursos)&&j.dados.cursos.length){ j.dados.contactos=j.dados.contactos||SD.contactos; j.dados.historico=j.dados.historico||[]; j.dados.promocoes=j.dados.promocoes||[]; window.CURSOS_DADOS=j.dados; render(); } })
+      .then(function(j){ if(j&&j.dados&&Array.isArray(j.dados.cursos)&&j.dados.cursos.length){ j.dados.contactos=j.dados.contactos||SD.contactos; j.dados.historico=j.dados.historico||[]; j.dados.promocoes=j.dados.promocoes||[]; window.CURSOS_DADOS=j.dados; try{document.dispatchEvent(new Event('cursos-dados-carregados'));}catch(e){} render(); } })
       .catch(function(){ render(); });
   }
   function passamFiltro(){

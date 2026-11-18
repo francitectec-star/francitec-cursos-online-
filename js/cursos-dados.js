@@ -19,6 +19,24 @@ window.CURSOS_DADOS={
     {id:'ingles',nome:'Inglês',categoria:'Línguas',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:600,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Inglês geral: compreensão, expressão oral e escrita.',condicoes:'',imagem:'',variantes:[]},
     {id:'hst',nome:'HST — Higiene e Segurança no Trabalho',categoria:'Segurança',duracao:'3 meses',modalidade:'Sábado',horarios:'Sábado 07h–13h',precoNormal:1485,inscricaoNormal:800,taxaCertificado:null,disponivel:true,descricao:'Higiene e segurança no trabalho: normas, prevenção e boas práticas profissionais.',condicoes:'Valor de Sábado — inscrição 800 MT e mensalidade 1.485 MT.',imagem:'',variantes:[]},{id:'secre',nome:'Secretariado Executivo',categoria:'Administração',duracao:'6 meses',modalidade:'Segunda a sexta',horarios:'Seg–Sex (turnos)',precoNormal:2000,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'Secretariado, atendimento, gestão documental e escritório.',condicoes:'',imagem:'',variantes:[]}
   ],
+  galeria:[
+    {img:'images/6ece3ebc-4157-456a-ab3a-e15cf0c9263d.jpg',tag:'🔧 Mecânica Auto',titulo:'Aula prática',legenda:'Prática em oficina.'},
+    {img:'images/8aab920a-8b89-4ce7-90f7-610da4fbb1f9.jpg',tag:'🔧 Mecânica Auto',titulo:'Prática',legenda:'Diagnóstico e desmontagem.'},
+    {img:'images/d0a6986e-112a-46dd-97c4-6d66625ba507.jpg',tag:'🔧 Mecânica Auto',titulo:'Formação prática',legenda:'Manutenção automóvel.'},
+    {img:'images/d600f0ef-e94d-4bd3-985c-03a70259a2e8.jpg',tag:'🚗 Mecânica',titulo:'Vida na Francitec',legenda:'Aprendizagem com profissionais.'},
+    {img:'images/16419288-a4cd-4224-98fa-e6274c43ad17.jpg',tag:'⚡ Electricidade',titulo:'Quadros e instalações',legenda:'Ligações e esquemas na prática.'},
+    {img:'images/4705c639-d95b-413e-b00b-f387a0c50aaf.jpg',tag:'⚡ Electricidade',titulo:'Formação técnica',legenda:'Montagem e medida.'},
+    {img:'images/7b539427-d43b-4fdb-86c6-46a1c7f15b52.jpg',tag:'💻 Informática',titulo:'Sala de informática',legenda:'Word, Excel e internet.'},
+    {img:'images/b6d171bc-f2a7-486a-9654-f31d89960e48.jpg',tag:'☀️ Fotovoltaico',titulo:'Energia solar',legenda:'Painéis e dimensionamento.'},
+    {img:'images/ea0cd5a3-c868-4c07-8a55-e3df5b7b184d.jpg',tag:'🎓 Certificação',titulo:'O teu futuro',legenda:'Formação de qualidade, futuro garantido.'},
+    {img:'images/ea38d577-b2bd-46a7-8ea6-3fe54c6c8e07.jpg',tag:'❄️ Refrigeração',titulo:'Climatização',legenda:'Instalação e manutenção de frio.'},
+    {img:'images/bc2198aa-de13-49b8-93a4-bbfdbd09f727.jpg',tag:'🚰 Canalização',titulo:'Hidráulica',legenda:'Redes de água e esgotos.'},
+    {img:'images/2fb61edb-918c-49cb-b33c-ab1bc69307a5.jpg',tag:'🧒 Educação de Infância',titulo:'Pedagogia',legenda:'Prática de sala de aula.'},
+    {img:'images/afd18610-3991-4000-aef4-263b4cde978b.jpg',tag:'🖥️ Informática Avançada',titulo:'Excel e manutenção',legenda:'Ferramentas digitais de trabalho.'},
+    {img:'images/9e757c97-1203-4d69-b5ee-152e5f558682.jpg',tag:'🇬🇧 Inglês',titulo:'Inglês geral',legenda:'Expressão oral e escrita.'},
+    {img:'images/62fef9a6-397a-4d7e-9e8e-fb493fec852b.jpg',tag:'🏢 Secretariado',titulo:'Gestão de escritório',legenda:'Atendimento e documentação.'},
+    {img:'images/ab93860e-572c-44d8-817b-6a6d2fa5345f.jpg',tag:'🦺 HST',titulo:'Segurança no trabalho',legenda:'Normas e prevenção.'}
+  ],
   promocoes:[
     {id:'p2027-ei-s', cursoId:'ele-inst', variante:'semana',  precoMensalidadePromo:1800, precoInscricaoPromo:500, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027', suspensa:false},
     {id:'p2027-ei-b', cursoId:'ele-inst', variante:'sabado',  precoMensalidadePromo:350,  precoInscricaoPromo:350, inicio:'2026-11-01T00:00', fim:'2027-01-31T23:59', condicoes:'Campanha Entra 2027 — Sábados', suspensa:false},
