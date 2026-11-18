@@ -5,7 +5,20 @@
   function carregar(){
     fetch('https://spi-francitec.onrender.com/api/public/cursos',{cache:'no-store'})
       .then(function(r){return r.json();})
-      .then(function(j){ if(j&&j.dados&&Array.isArray(j.dados.cursos)&&j.dados.cursos.length){ j.dados.contactos=j.dados.contactos||SD.contactos; j.dados.historico=j.dados.historico||[]; j.dados.promocoes=j.dados.promocoes||[]; window.CURSOS_DADOS=j.dados; try{document.dispatchEvent(new Event('cursos-dados-carregados'));}catch(e){} render(); } })
+      .then(function(j){
+        if(j&&j.dados){
+          var srv=j.dados, sd=window.CURSOS_DADOS;
+          var tem=(srv.cursos&&srv.cursos.length)||(srv.galeria&&srv.galeria.length);
+          if(tem){
+            sd.galeria=(srv.galeria&&srv.galeria.length)?srv.galeria:(sd.galeria||[]);
+            if(srv.cursos&&srv.cursos.length){sd.cursos=srv.cursos;sd.promocoes=srv.promocoes||[];}
+            sd.historico=srv.historico&&srv.historico.length?srv.historico:(sd.historico||[]);
+            if(srv.contactos&&srv.contactos.whatsapp)sd.contactos=srv.contactos;
+            try{document.dispatchEvent(new Event('cursos-dados-carregados'));}catch(e){}
+            render();
+          }
+        }
+      })
       .catch(function(){ render(); });
   }
   function passamFiltro(){

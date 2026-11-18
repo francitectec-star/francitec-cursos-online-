@@ -16,6 +16,7 @@ table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{border-bottom:1
 .badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px}.b-verde{background:#eefbf2;color:#1a7a3f}.b-verm{background:#fdeeee;color:#b3261e}.b-cinza{background:#eef1f6;color:#556}
 small{color:#68727f}
 </style>
+<script src="js/cursos-dados.js?v=2.3"></script>
 </head>
 <body>
 <header><b>FRANCITEC · Administração do Website</b><span id="quem" style="font-size:13px"></span></header>
@@ -40,8 +41,13 @@ function entrar(){
 }
 function carregar(){
   fetch(BASE+'/api/public/cursos',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
-    D=j.dados||window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[]};
-    D.promocoes=D.promocoes||[];D.historico=D.historico||[];D.cursos=D.cursos||[];D.galeria=D.galeria||[];
+        var srv=(j&&j.dados)||{}, semente=window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[],galeria:[],contactos:{whatsapp:'852652545'}};
+    D={versao:srv.versao||semente.versao||'2.3',
+      contactos:(srv.contactos&&srv.contactos.whatsapp)?srv.contactos:(semente.contactos||{whatsapp:'852652545'}),
+      cursos:(Array.isArray(srv.cursos)&&srv.cursos.length)?srv.cursos:(semente.cursos||[]),
+      promocoes:(Array.isArray(srv.promocoes)&&srv.promocoes.length)?srv.promocoes:(semente.promocoes||[]),
+      galeria:Array.isArray(srv.galeria)?srv.galeria:(semente.galeria||[]),
+      historico:(srv.historico||[]).concat(semente.historico||[])};
     desenhar();
   }).catch(function(e){alert('Servidor indisponível: '+e.message);});
 }
@@ -241,7 +247,6 @@ function baixar(){
   a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:'application/json'}));
   a.download='francitec_cursos_backup.json';a.click();
 }
-window.CURSOS_DADOS=window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[],contactos:{whatsapp:'852652545'}};
 if(sessionStorage.getItem('cz_tk')){TK=sessionStorage.getItem('cz_tk');carregar();}
 </script>
 </body>
