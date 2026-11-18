@@ -13,14 +13,33 @@
     var aulas=g.filter(function(x){return !EGrad.test(String(x.tag||''));});
     var grads=g.filter(function(x){return EGrad.test(String(x.tag||''));});
     function cartao(x){
-      return '<div class="gallery-item"><img src="'+x.img+'" alt="'+(x.alt||x.tag||'Francitec')+'">'
+      return '<div class="gallery-item"><img src="'+x.img+'" alt="'+(x.alt||x.tag||'Francitec')+'" data-lb="'+(x.titulo?x.titulo+' — ':'')+(x.tag||'FRANCITEC')+'" onclick="window.__lb&&window.__lb(this)">'
         +(x.tag?'<div class="tag-photo">'+x.tag+'</div>':'')
         +(x.titulo||x.legenda?'<div class="cap-photo">'+(x.titulo?'<b>'+x.titulo+'</b>':'')+(x.legenda||'')+'</div>':'')
         +'</div>';
     }
+    window.__lb=function(im){
+      var lb=document.getElementById('lb');if(!lb)return;
+      document.getElementById('lb-img').src=im.src;
+      document.getElementById('lb-cap').textContent=im.getAttribute('data-lb')||'FRANCITEC';
+      lb.style.display='block';
+    };
     box.innerHTML=aulas.length?aulas.map(cartao).join(''):'<p class="lead">Fotografias em actualização — voltem em breve.</p>';
     var qc=document.getElementById('conquistas-grid');
-    if(qc)qc.innerHTML=grads.length?grads.map(cartao).join(''):'<p class="lead">As fotos da próxima graduação chegam em breve.</p>';
+    if(qc){
+      // agrupar por edição (tag sem o 🎓): Graduação 2026 → um grupo
+      var grupos={};
+      grads.forEach(function(x){
+        var ed=(String(x.tag||'Graduação').replace(/🎓/g,'').trim())||'Graduações';
+        (grupos[ed]=grupos[ed]||[]).push(x);
+      });
+      var hg='';
+      Object.keys(grupos).sort().reverse().forEach(function(ed){
+        hg+='<div style="grid-column:1/-1;margin:14px 0 2px"><span class="badge" style="font-weight:800;color:var(--azul,#1a2c5b);font-size:14px">'+ed+' · '+grupos[ed].length+' fotografia(s)</span></div>';
+        hg+=grupos[ed].map(cartao).join('');
+      });
+      qc.innerHTML=hg||'<p class="lead">As fotos da próxima graduação chegam em breve.</p>';
+    }
   }
   if(window.CURSOS_DADOS&&window.CURSOS_DADOS.galeria)render();
   window.addEventListener('cursos-dados-carregados',render);
