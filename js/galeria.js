@@ -9,13 +9,18 @@
     var seed=(window.CURSOS_DADOS_SEED&&window.CURSOS_DADOS_SEED.galeria)||[];
     var tem=function(im){return g.some(function(y){return y.img===im;});};
     seed.forEach(function(x){ if(!tem(x.img))g.push(x); });
-    if(!g.length){box.innerHTML='<p class="lead">Fotografias em actualização — voltem em breve.</p>';return;}
-    box.innerHTML=g.map(function(x){
-      return '<div class="gallery-item"><img src="'+x.img+'" alt="'+(x.alt||'Francitec')+'">'
+    var EGrad=/(gradua|conquis)/i;
+    var aulas=g.filter(function(x){return !EGrad.test(String(x.tag||''));});
+    var grads=g.filter(function(x){return EGrad.test(String(x.tag||''));});
+    function cartao(x){
+      return '<div class="gallery-item"><img src="'+x.img+'" alt="'+(x.alt||x.tag||'Francitec')+'">'
         +(x.tag?'<div class="tag-photo">'+x.tag+'</div>':'')
         +(x.titulo||x.legenda?'<div class="cap-photo">'+(x.titulo?'<b>'+x.titulo+'</b>':'')+(x.legenda||'')+'</div>':'')
         +'</div>';
-    }).join('');
+    }
+    box.innerHTML=aulas.length?aulas.map(cartao).join(''):'<p class="lead">Fotografias em actualização — voltem em breve.</p>';
+    var qc=document.getElementById('conquistas-grid');
+    if(qc)qc.innerHTML=grads.length?grads.map(cartao).join(''):'<p class="lead">As fotos da próxima graduação chegam em breve.</p>';
   }
   if(window.CURSOS_DADOS&&window.CURSOS_DADOS.galeria)render();
   window.addEventListener('cursos-dados-carregados',render);
