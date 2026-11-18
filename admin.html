@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRANCITEC — Administração do Website</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f2f5fa;color:#1a2233}
+header{background:#1a2c5b;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+main{max-width:1100px;margin:20px auto;padding:0 14px}
+.card{background:#fff;border:1px solid #dfe5ee;border-radius:12px;padding:16px;margin-bottom:16px}
+button{cursor:pointer;border:0;border-radius:8px;padding:8px 14px;font-weight:700}
+.pri{background:#1a2c5b;color:#fff}.verde{background:#1a7a3f;color:#fff}.verm{background:#b3261e;color:#fff}.cinza{background:#e5eaf2}
+input,select{padding:7px;border:1px solid #c9d2e0;border-radius:8px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{border-bottom:1px solid #e8edf4;padding:6px 4px;text-align:left;vertical-align:top}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px}.b-verde{background:#eefbf2;color:#1a7a3f}.b-verm{background:#fdeeee;color:#b3261e}.b-cinza{background:#eef1f6;color:#556}
+small{color:#68727f}
+</style>
+</head>
+<body>
+<header><b>FRANCITEC · Administração do Website</b><span id="quem" style="font-size:13px"></span></header>
+<main id="conteudo">
+<div class="card" id="login-card">
+<h3>Entrar</h3>
+<p><small>Use o seu utilizador da SPI (administrador ou director). A palavra-passe nunca fica guardada nesta página.</small></p>
+<p>Login: <input id="lg" autocomplete="username"> Senha: <input id="pw" type="password" autocomplete="current-password"> <button class="pri" onclick="entrar()">Entrar</button></p>
+</div>
+<div id="painel" hidden></div>
+</main>
+<script>
+var BASE='https://spi-francitec.onrender.com', D=null, TK='';
+function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function fmt(v){return (Number(v)||0).toLocaleString('pt-PT')+' MT';}
+function br(iso){var p=String(iso||'').split(/[-T]/);return p.length>=3?p[2]+'/'+p[1]+'/'+p[0]:'—';}
+function entrar(){
+  fetch(BASE+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({login:document.getElementById('lg').value,senha:document.getElementById('pw').value})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.erro||'falhou');return j;});})
+  .then(function(j){TK=j.token;sessionStorage.setItem('cz_tk',TK);sessionStorage.setItem('cz_qm',(j.user||{}).nome||'');carregar();})
+  .catch(function(e){alert('Login falhou: '+e.message);});
+}
+function carregar(){
+  fetch(BASE+'/api/public/cursos',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){
+    D=j.dados||window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[]};
+    D.promocoes=D.promocoes||[];D.historico=D.historico||[];D.cursos=D.cursos||[];
+    desenhar();
+  }).catch(function(e){alert('Servidor indisponível: '+e.message);});
+}
+function guardar(){
+  if(!confirm('Publicar as alterações no website?'))return;
+  fetch(BASE+'/api/cursos-dados',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+TK},body:JSON.stringify({dados:D})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.erro||'falhou');return j;});})
+  .then(function(){alert('Publicado ✔ — o site actualiza em segundos.');carregar();})
+  .catch(function(e){alert('Erro: '+e.message);});
+}
+function estado(pr){
+  if(pr.suspensa)return ['SUSPENSA','b-cinza'];
+  var a=new Date(Date.now()+(120+new Date().getTimezoneOffset())*60000);function p(n){return String(n).padStart(2,'0');}
+  var iso=a.getFullYear()+'-'+p(a.getMonth()+1)+'-'+p(a.getDate())+'T'+p(a.getHours())+':'+p(a.getMinutes());
+  if(pr.inicio&&iso<pr.inicio)return ['AGENDADA','b-cinza'];
+  if(pr.fim&&iso>pr.fim)return ['TERMINADA','b-verm'];
+  return ['ACTIVA','b-verde'];
+}
+function validar(c){
+  if(Number(c.precoNormal)<0||Number(c.inscricaoNormal)<0){alert('Preços não podem ser negativos.');return false;}
+  if(!c.nome){alert('Nome obrigatório.');return false;}
+  return true;
+}
+function desenhar(){
+  document.getElementById('login-card').hidden=true;
+  var P=document.getElementById('painel');P.hidden=false;
+  document.getElementById('quem').textContent='Sessão: '+(sessionStorage.getItem('cz_qm')||'');
+  var h='<div class="card"><b>Cursos ('+D.cursos.length+')</b> — edite e clique «Publicar». Preços independentes por curso.<button class="verde" style="float:right" onclick="guardar()">💾 Publicar alterações</button><button class="cinza" style="float:right;margin-right:6px" onclick="novoCurso()">➕ Criar curso</button><button class="cinza" style="float:right;margin-right:6px" onclick="baixar()">⬇ Cópia de segurança</button></div>';
+  h+='<div class="card"><table><tr><th>Curso</th><th>Duração</th><th>Modalidade</th><th>Mensal. normal</th><th>Inscrição</th><th>Certificado</th><th>Estado</th></tr>';
+  D.cursos.forEach(function(c,ix){
+    h+='<tr><td><input value="'+esc(c.nome)+'" onchange="D.cursos['+ix+'].nome=this.value"><br><small>'+esc(c.categoria||'')+'</small></td>'
+      +'<td><input size="8" value="'+esc(c.duracao||'')+'" onchange="D.cursos['+ix+'].duracao=this.value"></td>'
+      +'<td><input size="14" value="'+esc(c.modalidade||'')+'" onchange="D.cursos['+ix+'].modalidade=this.value"></td>'
+      +'<td><input size="7" type="number" min="0" value="'+Number(c.precoNormal||0)+'" onchange="D.cursos['+ix+'].precoNormal=Number(this.value);hist(this,\'preço mensalidade\',\''+esc(c.nome)+'\')"></td>'
+      +'<td><input size="7" type="number" min="0" value="'+Number(c.inscricaoNormal||0)+'" onchange="D.cursos['+ix+'].inscricaoNormal=Number(this.value)"></td>'
+      +'<td><input size="7" type="number" min="0" value="'+Number(c.taxaCertificado||0)+'" onchange="D.cursos['+ix+'].taxaCertificado=Number(this.value)||null"></td>'
+      +'<td><button class="cinza" onclick="D.cursos['+ix+'].disponivel=!D.cursos['+ix+'].disponivel;desenhar()">'+(c.disponivel===false?'⚪ Inativo':'🟢 Activo')+'</button> <button class="verm" onclick="if(confirm(\'Apagar '+esc(c.nome)+'?\')){D.cursos.splice('+ix+',1);desenhar()}">✕</button></td></tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="card"><b>Campanhas promocionais ('+D.promocoes.length+')</b><button class="verde" style="float:right" onclick="novaPromo()">➕ Nova campanha</button>';
+  h+='<table><tr><th>Curso</th><th>Mensal. promo</th><th>Inscrição promo</th><th>Início</th><th>Fim</th><th>Estado</th><th>Ações</th></tr>';
+  if(!D.promocoes.length)h+='<tr><td colspan="7"><small>Sem campanhas. Os preços normais estão aplicados.</small></td></tr>';
+  D.promocoes.forEach(function(pr,px){
+    var e=estado(pr);
+    var nc=(D.cursos.find(function(c){return c.id===pr.cursoId;})||{}).nome||'* TODOS *';
+    h+='<tr><td>'+esc(nc)+'</td><td>'+(pr.precoMensalidadePromo!=null?fmt(pr.precoMensalidadePromo):'—')+'</td><td>'+(pr.precoInscricaoPromo!=null?fmt(pr.precoInscricaoPromo):'—')+'</td>'
+      +'<td>'+br(pr.inicio)+'</td><td>'+br(pr.fim)+'</td><td><span class="badge '+e[1]+'">'+e[0]+'</span></td>'
+      +'<td><button class="cinza" onclick="prolongar('+px+')">⏱ +7 dias</button> <button class="cinza" onclick="D.promocoes['+px+'].suspensa=!D.promocoes['+px+'].suspensa;desenhar()">'+(pr.suspensa?'▶ Retomar':'⏸ Suspender')+'</button> <button class="verm" onclick="D.promocoes.splice('+px+',1);desenhar()">✕</button></td></tr>';
+  });
+  h+='</table></div>';
+  h+='<div class="card"><b>Histórico ('+D.historico.length+')</b><table><tr><th>Quando</th><th>Curso</th><th>De → Para</th><th>Por</th><th>Motivo</th></tr>';
+  D.historico.slice(-10).reverse().forEach(function(x){h+='<tr><td>'+String(x.quando||'').slice(0,16).replace('T',' ')+'</td><td>'+esc(x.curso||'—')+'</td><td>'+fmt(x.de)+' → '+fmt(x.para)+'</td><td>'+esc(x.por||'—')+'</td><td>'+esc(x.motivo||'—')+'</td></tr>';});
+  if(!D.historico.length)h+='<tr><td colspan="5"><small>Sem alterações registadas ainda.</small></td></tr>';
+  h+='</table></div>';
+  P.innerHTML=h;
+}
+function hist(el,tipo,nome){
+  var linha={quando:new Date().toISOString(),curso:nome,campo:tipo,de:'(ver cópia de segurança)',para:el.value,por:sessionStorage.getItem('cz_qm')||''};
+  D.historico.push(linha);
+}
+function novoCurso(){
+  var n=prompt('Nome do novo curso:');if(!n)return;
+  D.cursos.push({id:'c'+Date.now(),nome:n,categoria:'Geral',duracao:'—',modalidade:'Segunda a sexta',horarios:'',precoNormal:0,inscricaoNormal:500,taxaCertificado:null,disponivel:true,descricao:'',condicoes:'',imagem:'',variantes:[]});
+  desenhar();
+}
+function novaPromo(){
+  if(!D.cursos.length){alert('Crie primeiro um curso.');return;}
+  var ops=D.cursos.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.nome)+'</option>';}).join('');
+  var div=document.createElement('div');
+  div.innerHTML='<div class="card" style="position:fixed;inset:20% auto auto 50%;transform:translateX(-50%);box-shadow:0 10px 40px rgba(0,0,0,.3);z-index:99;min-width:min(420px,92vw)"><b>Nova campanha</b><p><small>Deixe vazio o que não tiver desconto. O preço normal fica sempre preservado.</small></p>'
+   +'Curso: <select id="np-c"><option value="*">* TODOS *</option>'+ops+'</select><br><br>'
+   +'Mensalidade promocional: <input id="np-m" type="number" min="0" placeholder="ex.: 1500"><br><br>'
+   +'Inscrição promocional: <input id="np-i" type="number" min="0" placeholder="ex.: 300"><br><br>'
+   +'Início: <input id="np-in" type="datetime-local"> Fim: <input id="np-fi" type="datetime-local"><br><br>'
+   +'Condições: <input id="np-cd" size="30"><br><br>'
+   +'<button class="pri" id="np-ok">Criar</button> <button class="cinza" id="np-no">Cancelar</button></div>';
+  document.body.appendChild(div);
+  div.querySelector('#np-ok').onclick=function(){
+    var m=div.querySelector('#np-m').value,i=div.querySelector('#np-i').value;
+    var pr={id:'p'+Date.now(),cursoId:div.querySelector('#np-c').value,precoMensalidadePromo:m===''?null:Number(m),precoInscricaoPromo:i===''?null:Number(i),inicio:div.querySelector('#np-in').value||'',fim:div.querySelector('#np-fi').value||'',condicoes:div.querySelector('#np-cd').value,suspensa:false};
+    if(pr.inicio&&pr.fim&&pr.fim<pr.inicio){alert('A data de término deve ser posterior ao início.');return;}
+    if(pr.precoMensalidadePromo==null&&pr.precoInscricaoPromo==null){alert('Indique pelo menos um valor promocional.');return;}
+    D.promocoes.push(pr);document.body.removeChild(div);desenhar();
+  };
+  div.querySelector('#np-no').onclick=function(){document.body.removeChild(div);};
+}
+function prolongar(px){
+  var pr=D.promocoes[px];
+  var base=pr.fim?new Date(pr.fim):new Date(Date.now()+(120+new Date().getTimezoneOffset())*60000);
+  base.setDate(base.getDate()+7);
+  function p(n){return String(n).padStart(2,'0');}
+  pr.fim=base.getFullYear()+'-'+p(base.getMonth()+1)+'-'+p(base.getDate())+'T'+p(base.getHours())+':'+p(base.getMinutes());
+  desenhar();
+}
+function baixar(){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:'application/json'}));
+  a.download='francitec_cursos_backup.json';a.click();
+}
+window.CURSOS_DADOS=window.CURSOS_DADOS||{cursos:[],promocoes:[],historico:[],contactos:{whatsapp:'852652545'}};
+if(sessionStorage.getItem('cz_tk')){TK=sessionStorage.getItem('cz_tk');carregar();}
+</script>
+</body>
+</html>

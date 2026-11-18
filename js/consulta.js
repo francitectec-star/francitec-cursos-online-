@@ -1,0 +1,65 @@
+/* FRANCITEC — secção CONSULTAR CURSOS E PREÇOS (v2.0) */
+(function(){
+  var SD=window.CURSOS_DADOS, ENG=window.SPI_PROMO;
+  var filtro='todos', busca='';
+  function carregar(){
+    fetch('https://spi-francitec.onrender.com/api/public/cursos',{cache:'no-store'})
+      .then(function(r){return r.json();})
+      .then(function(j){ if(j&&j.dados&&Array.isArray(j.dados.cursos)&&j.dados.cursos.length){ j.dados.contactos=j.dados.contactos||SD.contactos; j.dados.historico=j.dados.historico||[]; j.dados.promocoes=j.dados.promocoes||[]; window.CURSOS_DADOS=j.dados; render(); } })
+      .catch(function(){ render(); });
+  }
+  function passamFiltro(){
+    return (window.CURSOS_DADOS.cursos||[]).filter(function(c){
+      if(!c.disponivel&&filtro!=='todos')return false;
+      var st=null, pr=ENG.paraCurso(window.CURSOS_DADOS,c.id);
+      st=pr?ENG.estado(pr):null;
+      if(busca&&(c.nome+' '+c.categoria+' '+c.descricao).toLowerCase().indexOf(busca)<0)return false;
+      if(filtro==='todos')return true;
+      if(filtro==='promocao')return st==='ACTIVA';
+      if(filtro==='normal')return st!=='ACTIVA';
+      if(filtro==='futuras')return st==='AGENDADA';
+      if(filtro==='terminadas')return st==='TERMINADA';
+      return true;
+    });
+  }
+  function ficha(c){
+    var info=ENG.preco(window.CURSOS_DADOS,c.id);
+    var h='<div class="cz-card" data-id="'+c.id+'">'
+      +'<div class="cz-nome">'+c.nome+'</div>'
+      +'<div class="cz-meta">'+(c.categoria||'')+' · '+c.duracao+' · '+c.modalidade+'</div>';
+    if(info.estado==='PROMOCAO'){
+      h+='<div class="cz-precos"><span class="cz-normal-riscado">'+ENG.fmt(info.normalMensalidade)+'</span>'
+        +'<span class="cz-promo">'+ENG.fmt(info.mensalidade)+'/mês</span></div>'
+        +'<div class="cz-poupanca">Poupa '+ENG.fmt(info.poupanca)+' · válido até '+ENG.dataBR(info.fim)+'</div>'
+        +'<span class="cz-badge cz-ativa">PROMOÇÃO ACTIVA</span>';
+    }else{
+      h+='<div class="cz-precos"><span class="cz-promo">'+ENG.fmt(info.mensalidade)+'/mês</span></div>';
+      var prF=(window.CURSOS_DADOS.promocoes||[]).filter(function(p){return (p.cursoId===c.id||p.cursoId==='*')&&ENG.estado(p)!=='ACTIVA';});
+      if(prF.length)h+='<span class="cz-badge">'+ENG.estado(prF[0])+(prF[0].inicio&&ENG.estado(prF[0])==='AGENDADA'?' desde '+ENG.dataBR(prF[0].inicio):'')+'</span>';
+    }
+    h+='<div class="cz-insc">Inscrição: '+ENG.fmt(info.inscricao)+(c.taxaCertificado?' · Certificado: '+ENG.fmt(c.taxaCertificado):'')+'</div>';
+    if(c.descricao)h+='<div class="cz-desc">'+c.descricao+'</div>';
+    if(c.condicoes)h+='<div class="cz-cond">'+c.condicoes+'</div>';
+    if((c.variantes||[]).length)h+='<div class="cz-cond">Sábados: '+c.variantes.map(function(v){return v.modalidade+' — '+ENG.fmt(v.inscricao)+' inscrição · '+ENG.fmt(v.mensalidade)+'/mês';}).join(' · ')+'</div>';
+    h+='<a class="cz-btn" target="_blank" rel="noopener" href="'+ENG.whatsapp(c,info)+'">Enviar inscrição via WhatsApp</a>'
+      +'<div class="cz-nota">A abertura do WhatsApp não reserva a vaga — a inscrição é confirmada pela secretaria.</div></div>';
+    return h;
+  }
+  function render(){
+    var box=document.getElementById('cz-resultados');if(!box)return;
+    var lista=passamFiltro();
+    box.innerHTML=lista.length?lista.map(ficha).join(''):'<p class="cz-vazio">Nenhum curso encontrado. Tente outro termo ou filtro.</p>';
+    var cont=document.getElementById('cz-contagem');
+    if(cont)cont.textContent=lista.length+' curso(s) · dados actualizados automaticamente';
+  }
+  document.addEventListener('input',function(e){
+    if(e.target&&e.target.id==='cz-busca'){busca=e.target.value.toLowerCase().trim();render();}
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-cz-filtro]');if(!b)return;
+    filtro=b.dataset.czFiltro;
+    document.querySelectorAll('[data-cz-filtro]').forEach(function(x){x.style.background=x===b?'var(--azul, #1a2c5b)':'';x.style.color=x===b?'#fff':'';});
+    render();
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',carregar);else carregar();
+})();

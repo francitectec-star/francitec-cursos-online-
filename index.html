@@ -2963,6 +2963,57 @@ A pré-inscrição não substitui a confirmação da matrícula.
      FOOTER
 ========================= -->
 
+<section id="consulta">
+
+<div class="container">
+
+<span class="tag">Preços e promoções</span>
+
+<h2>
+CONSULTAR CURSOS E <span class="dot">PREÇOS</span>
+</h2>
+
+<div class="cz-barra">
+<input id="cz-busca" type="search" placeholder="🔎 Pesquisar curso (ex.: electricidade, inglês…)" style="padding:10px 14px;border:1px solid var(--borda,#d8dee9);border-radius:10px;min-width:min(340px,80vw);font-size:14px">
+<span id="cz-filtros">
+<button class="btn btn-pequeno btn-primario" data-cz-filtro="todos">Todos</button>
+<button class="btn btn-pequeno" data-cz-filtro="promocao">Em promoção</button>
+<button class="btn btn-pequeno" data-cz-filtro="normal">Preço normal</button>
+<button class="btn btn-pequeno" data-cz-filtro="futuras">Promoções futuras</button>
+<button class="btn btn-pequeno" data-cz-filtro="terminadas">Terminadas</button>
+</span>
+<span class="cz-contagem" id="cz-contagem"></span>
+</div>
+
+<div class="cz-grid" id="cz-resultados"></div>
+
+<p class="cz-legal">Preços em Meticais (MT). Durante uma promoção, o preço normal aparece riscado e o promocional em destaque. Terminada a campanha, o preço normal volta a ser aplicado automaticamente. A abertura do WhatsApp não reserva a vaga.</p>
+
+</div>
+
+<style>
+#consulta .cz-barra{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+#consulta .cz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+#consulta .cz-card{border:1px solid #e2e7ef;border-radius:14px;padding:18px;background:#fff;box-shadow:0 2px 8px rgba(20,35,80,.06)}
+#consulta .cz-nome{font-weight:800;font-size:17px;color:var(--azul,#1a2c5b)}
+#consulta .cz-meta{font-size:12.5px;color:#68727f;margin:4px 0 10px}
+#consulta .cz-precos{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+#consulta .cz-normal-riscado{text-decoration:line-through;color:#98a1ad;font-size:14px}
+#consulta .cz-promo{font-weight:800;font-size:20px;color:#1a7a3f}
+#consulta .cz-poupanca{font-size:12.5px;color:#8a6d1a;background:#fdf6e3;border-radius:8px;padding:3px 8px;display:inline-block;margin:6px 0}
+#consulta .cz-badge{font-size:11px;font-weight:700;letter-spacing:.06em;color:#68727f;border:1px solid #e2e7ef;border-radius:20px;padding:2px 10px;display:inline-block;margin:4px 0}
+#consulta .cz-ativa{color:#1a7a3f;border-color:#1a7a3f;background:#eefbf2}
+#consulta .cz-insc{font-size:13px;margin-top:6px}
+#consulta .cz-desc{font-size:12.5px;color:#444;margin-top:6px}
+#consulta .cz-cond{font-size:12px;color:#68727f;margin-top:5px}
+#consulta .cz-btn{display:block;text-align:center;margin-top:12px;background:#25D366;color:#fff;font-weight:700;padding:10px;border-radius:10px;text-decoration:none;font-size:14px}
+#consulta .cz-nota{font-size:10.5px;color:#98a1ad;margin-top:6px}
+#consulta .cz-legal{font-size:12px;color:#68727f;margin-top:18px}
+#consulta .cz-vazio{padding:20px;color:#68727f}
+</style>
+
+</section>
+
 <footer>
 
 <div class="container">
@@ -3618,5 +3669,7 @@ function(e){
 
 </script>
 
+<script src="js/cursos-dados.js?v=2.0"></script>
+<script src="js/consulta.js?v=2.0"></script>
 </body>
 </html>
